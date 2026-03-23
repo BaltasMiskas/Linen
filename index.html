@@ -1,227 +1,154 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="lt">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fabric Finder – Baltas Miškas</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<title>Audinio gidas – Baltas Miškas</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --cream: #F5F0E8;
-    --linen: #E8DFC8;
-    --bark: #7A6248;
-    --forest: #3A4A3A;
-    --clay: #A0704A;
-    --sand: #C8B49A;
-    --ink: #2A2420;
-    --white: #FDFAF5;
-    --accent: #8B6E4E;
-    --radius: 2px;
+    --accent: #a16207;
+    --accent-hover: #854d04;
+    --ink: #111111;
+    --mid: #666666;
+    --light: #e5e5e5;
+    --bg: #ffffff;
   }
 
   body {
-    font-family: 'Jost', sans-serif;
-    background: var(--cream);
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
     color: var(--ink);
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 24px 16px;
+    padding: 40px 16px;
   }
 
-  /* Embeddable wrapper */
-  .quiz-embed {
+  .quiz-wrap {
     width: 100%;
-    max-width: 680px;
-    background: var(--white);
-    border: 1px solid var(--linen);
-    position: relative;
-    overflow: hidden;
+    max-width: 600px;
   }
 
-  /* Decorative top bar */
-  .quiz-embed::before {
-    content: '';
-    display: block;
-    height: 4px;
-    background: linear-gradient(90deg, var(--forest), var(--bark), var(--clay));
-  }
+  .quiz-header { margin-bottom: 40px; }
 
-  /* Grain texture overlay */
-  .quiz-embed::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
-    pointer-events: none;
-    opacity: 0.4;
-  }
-
-  .quiz-header {
-    padding: 40px 48px 28px;
-    border-bottom: 1px solid var(--linen);
-    position: relative;
-  }
-
-  .quiz-label {
-    font-size: 10px;
-    letter-spacing: 0.2em;
+  .quiz-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: var(--bark);
+    color: var(--accent);
     font-weight: 500;
-    margin-bottom: 12px;
+    margin-bottom: 14px;
   }
 
   .quiz-title {
-    font-family: 'Playfair Display', serif;
     font-size: clamp(22px, 4vw, 30px);
-    font-weight: 400;
-    color: var(--forest);
+    font-weight: 300;
+    color: var(--ink);
     line-height: 1.25;
     margin-bottom: 10px;
+    letter-spacing: -0.02em;
   }
 
-  .quiz-subtitle {
-    font-size: 13px;
-    color: var(--bark);
+  .quiz-sub {
+    font-size: 14px;
+    color: var(--mid);
     font-weight: 300;
-    line-height: 1.6;
+    line-height: 1.65;
   }
 
-  /* Progress bar */
-  .progress-bar-wrap {
-    padding: 20px 48px 0;
-  }
+  /* Progress */
+  .progress-area { margin-bottom: 36px; }
 
   .progress-meta {
     display: flex;
     justify-content: space-between;
     font-size: 11px;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: var(--sand);
+    color: var(--light);
     margin-bottom: 8px;
   }
 
-  .progress-track {
-    height: 2px;
-    background: var(--linen);
-    border-radius: 1px;
-    overflow: hidden;
-  }
+  .progress-track { height: 1px; background: var(--light); }
 
   .progress-fill {
     height: 100%;
-    background: linear-gradient(90deg, var(--forest), var(--bark));
-    border-radius: 1px;
-    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    background: var(--accent);
+    transition: width 0.45s ease;
   }
 
-  /* Question area */
-  .quiz-body {
-    padding: 32px 48px 40px;
-    position: relative;
+  /* Questions */
+  .question-block { display: none; animation: fadeIn 0.3s ease forwards; }
+  .question-block.active { display: block; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
   }
 
-  .question-block {
-    display: none;
-    animation: fadeUp 0.4s ease forwards;
-  }
-
-  .question-block.active {
-    display: block;
-  }
-
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(16px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .question-num {
-    font-size: 10px;
-    letter-spacing: 0.2em;
+  .q-num {
+    font-size: 11px;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--sand);
-    margin-bottom: 8px;
+    color: var(--light);
+    margin-bottom: 10px;
   }
 
-  .question-text {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(16px, 2.5vw, 20px);
+  .q-text {
+    font-size: clamp(16px, 2.5vw, 19px);
+    font-weight: 400;
     color: var(--ink);
     margin-bottom: 24px;
-    line-height: 1.4;
+    line-height: 1.45;
+    letter-spacing: -0.01em;
   }
 
-  .options-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
+  .options-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
   }
 
   .option-btn {
-    background: transparent;
-    border: 1px solid var(--linen);
-    padding: 14px 16px;
+    background: none;
+    border: 1px solid var(--light);
+    padding: 14px 18px;
     text-align: left;
     cursor: pointer;
-    transition: all 0.2s ease;
-    font-family: 'Jost', sans-serif;
-    font-size: 13px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 300;
     color: var(--ink);
-    line-height: 1.4;
-    position: relative;
-    border-radius: var(--radius);
+    line-height: 1.45;
+    transition: border-color 0.15s, color 0.15s, background 0.15s;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
   }
 
-  .option-btn::before {
-    content: '';
-    position: absolute;
-    left: 0; top: 0; bottom: 0;
-    width: 0;
-    background: var(--forest);
-    transition: width 0.2s ease;
-  }
-
-  .option-btn:hover {
-    border-color: var(--forest);
-    color: var(--forest);
-    background: rgba(58,74,58,0.04);
-  }
-
-  .option-btn:hover::before {
-    width: 3px;
-  }
+  .option-btn:hover { border-color: var(--accent); color: var(--accent); }
 
   .option-btn.selected {
-    border-color: var(--forest);
-    background: rgba(58,74,58,0.06);
-    color: var(--forest);
-    font-weight: 500;
+    border-color: var(--accent);
+    color: var(--accent);
+    background: #fef9ee;
   }
 
-  .option-btn.selected::before {
-    width: 3px;
-  }
-
-  .option-letter {
-    display: inline-block;
-    width: 18px;
-    height: 18px;
-    border: 1px solid currentColor;
-    text-align: center;
-    line-height: 16px;
-    font-size: 10px;
-    letter-spacing: 0.05em;
-    margin-right: 8px;
-    vertical-align: middle;
+  .opt-letter {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: inherit;
+    opacity: 0.5;
+    padding-top: 2px;
     flex-shrink: 0;
   }
 
-  /* Navigation */
+  /* Nav */
   .quiz-nav {
     display: flex;
     justify-content: space-between;
@@ -232,529 +159,441 @@
   .btn-back {
     background: none;
     border: none;
-    font-family: 'Jost', sans-serif;
+    font-family: 'DM Sans', sans-serif;
     font-size: 12px;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: var(--sand);
+    color: var(--light);
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 8px 0;
-    transition: color 0.2s;
+    padding: 0;
+    transition: color 0.15s;
   }
 
-  .btn-back:hover { color: var(--bark); }
+  .btn-back:not(:disabled):hover { color: var(--mid); }
   .btn-back:disabled { opacity: 0; pointer-events: none; }
 
   .btn-next {
-    background: var(--forest);
-    color: var(--white);
+    background: var(--accent);
+    color: #fff;
     border: none;
-    font-family: 'Jost', sans-serif;
+    font-family: 'DM Sans', sans-serif;
     font-size: 12px;
-    letter-spacing: 0.15em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
     padding: 12px 28px;
     cursor: pointer;
-    transition: all 0.2s ease;
-    border-radius: var(--radius);
+    transition: background 0.15s, opacity 0.2s;
+    font-weight: 500;
     opacity: 0;
     pointer-events: none;
   }
 
-  .btn-next.visible {
-    opacity: 1;
-    pointer-events: all;
-  }
+  .btn-next.visible { opacity: 1; pointer-events: all; }
+  .btn-next:hover { background: var(--accent-hover); }
 
-  .btn-next:hover {
-    background: var(--bark);
-    transform: translateY(-1px);
-  }
-
-  /* Result screen */
-  #result-screen {
-    display: none;
-    padding: 40px 48px;
-    animation: fadeUp 0.5s ease forwards;
-  }
-
+  /* Result */
+  #result-screen { display: none; animation: fadeIn 0.4s ease forwards; }
   #result-screen.show { display: block; }
 
-  .result-label {
-    font-size: 10px;
-    letter-spacing: 0.2em;
+  .result-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: var(--bark);
-    margin-bottom: 12px;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 14px;
   }
 
-  .result-fabric {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(28px, 5vw, 42px);
-    color: var(--forest);
+  .result-fabric-name {
+    font-size: clamp(30px, 6vw, 46px);
+    font-weight: 300;
+    letter-spacing: -0.03em;
+    color: var(--ink);
     margin-bottom: 4px;
-    font-weight: 400;
   }
 
   .result-tagline {
-    font-family: 'Playfair Display', serif;
+    font-size: 14px;
     font-style: italic;
-    font-size: 15px;
-    color: var(--bark);
-    margin-bottom: 24px;
+    font-weight: 300;
+    color: var(--mid);
+    margin-bottom: 28px;
   }
 
   .result-divider {
-    width: 40px;
+    width: 32px;
     height: 1px;
-    background: var(--sand);
+    background: var(--accent);
     margin-bottom: 24px;
   }
 
-  .result-description {
+  .result-desc {
     font-size: 14px;
-    color: var(--ink);
+    font-weight: 300;
+    color: var(--mid);
     line-height: 1.75;
     margin-bottom: 28px;
-    font-weight: 300;
   }
 
-  /* Trait pills */
   .traits {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: 6px;
     margin-bottom: 32px;
   }
 
   .trait {
-    border: 1px solid var(--linen);
     font-size: 11px;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    padding: 5px 12px;
-    color: var(--bark);
-    border-radius: 100px;
+    color: var(--accent);
+    border: 1px solid #f0d9b0;
+    padding: 4px 12px;
+    background: #fef9ee;
   }
 
-  /* Score breakdown */
-  .score-bars {
-    margin-bottom: 32px;
-  }
+  /* Score bars */
+  .score-bars { margin-bottom: 36px; }
 
-  .score-bar-row {
+  .score-row {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 14px;
     margin-bottom: 10px;
   }
 
-  .score-bar-label {
+  .score-label {
     font-size: 11px;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: var(--bark);
-    width: 80px;
+    color: var(--mid);
+    width: 100px;
+    flex-shrink: 0;
+    font-weight: 300;
+  }
+
+  .score-track { flex: 1; height: 1px; background: var(--light); }
+
+  .score-fill {
+    height: 100%;
+    background: var(--accent);
+    width: 0;
+    transition: width 0.9s ease;
+  }
+
+  .score-pct {
+    font-size: 11px;
+    color: var(--light);
+    width: 32px;
+    text-align: right;
     flex-shrink: 0;
   }
 
-  .score-bar-track {
-    flex: 1;
-    height: 4px;
-    background: var(--linen);
-    border-radius: 2px;
-    overflow: hidden;
+  /* CTAs */
+  .result-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
   }
 
-  .score-bar-fill {
-    height: 100%;
-    border-radius: 2px;
-    width: 0;
-    transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .fill-linen  { background: var(--forest); }
-  .fill-cotton { background: var(--clay); }
-  .fill-ramie  { background: var(--bark); }
-  .fill-synth  { background: var(--sand); }
-
-  .result-cta {
-    display: inline-block;
-    background: var(--forest);
-    color: var(--white);
-    font-family: 'Jost', sans-serif;
+  .btn-cta {
+    background: var(--accent);
+    color: #fff;
+    font-family: 'DM Sans', sans-serif;
     font-size: 12px;
-    letter-spacing: 0.15em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
-    padding: 14px 32px;
+    padding: 14px 28px;
     text-decoration: none;
-    transition: all 0.2s ease;
-    border-radius: var(--radius);
-    margin-right: 12px;
-    margin-bottom: 10px;
+    font-weight: 500;
+    transition: background 0.15s;
     display: inline-block;
   }
 
-  .result-cta:hover {
-    background: var(--bark);
-    transform: translateY(-1px);
-  }
+  .btn-cta:hover { background: var(--accent-hover); }
 
   .btn-retake {
     background: none;
-    border: 1px solid var(--linen);
-    color: var(--bark);
-    font-family: 'Jost', sans-serif;
+    border: 1px solid var(--light);
+    color: var(--mid);
+    font-family: 'DM Sans', sans-serif;
     font-size: 12px;
-    letter-spacing: 0.15em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
     padding: 13px 24px;
     cursor: pointer;
-    transition: all 0.2s ease;
-    border-radius: var(--radius);
-    vertical-align: top;
-    margin-bottom: 10px;
+    font-weight: 300;
+    transition: border-color 0.15s, color 0.15s;
   }
 
-  .btn-retake:hover {
-    border-color: var(--forest);
-    color: var(--forest);
-  }
+  .btn-retake:hover { border-color: var(--mid); color: var(--ink); }
 
-  /* Fabric icon */
-  .fabric-icon {
-    float: right;
-    width: 72px;
-    height: 72px;
-    margin: 0 0 16px 20px;
-    opacity: 0.7;
-  }
-
-  @media (max-width: 520px) {
-    .quiz-header, .quiz-body, #result-screen { padding-left: 24px; padding-right: 24px; }
-    .progress-bar-wrap { padding-left: 24px; padding-right: 24px; }
-    .options-grid { grid-template-columns: 1fr; }
-    .fabric-icon { display: none; }
-    .result-cta, .btn-retake { width: 100%; text-align: center; }
+  @media (max-width: 480px) {
+    .btn-cta, .btn-retake { width: 100%; text-align: center; }
   }
 </style>
 </head>
 <body>
 
-<div class="quiz-embed" id="quiz-embed">
+<div class="quiz-wrap">
 
-  <!-- Header -->
   <div class="quiz-header">
-    <div class="quiz-label">Baltas Miškas · Fabric Guide</div>
-    <h1 class="quiz-title">Which fabric is right for you?</h1>
-    <p class="quiz-subtitle">Answer 6 quick questions and discover the natural textile that matches your lifestyle, values, and style.</p>
+    <div class="quiz-eyebrow">Baltas Miškas · Audinio gidas</div>
+    <h1 class="quiz-title">Koks audinys tinka jums?</h1>
+    <p class="quiz-sub">Atsakykite į 6 klausimus ir sužinokite, kuris natūralus tekstilas labiausiai atitinka jūsų gyvenimo būdą ir stilių.</p>
   </div>
 
-  <!-- Progress -->
-  <div class="progress-bar-wrap" id="progress-wrap">
+  <div class="progress-area" id="progress-area">
     <div class="progress-meta">
-      <span id="progress-text">Question 1 of 6</span>
-      <span id="progress-pct">0%</span>
+      <span id="prog-text">1 / 6 klausimas</span>
+      <span id="prog-pct">0%</span>
     </div>
     <div class="progress-track">
-      <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+      <div class="progress-fill" id="prog-fill" style="width:0%"></div>
     </div>
   </div>
 
-  <!-- Questions -->
-  <div class="quiz-body" id="quiz-body">
+  <div id="quiz-body">
 
-    <!-- Q1 -->
     <div class="question-block active" id="q1">
-      <div class="question-num">01</div>
-      <div class="question-text">What's your main priority when choosing clothes?</div>
-      <div class="options-grid">
-        <button class="option-btn" onclick="choose(0,'linen',this)"><span class="option-letter">A</span>Timeless elegance that ages beautifully</button>
-        <button class="option-btn" onclick="choose(0,'cotton',this)"><span class="option-letter">B</span>All-day comfort and softness</button>
-        <button class="option-btn" onclick="choose(0,'ramie',this)"><span class="option-letter">C</span>Durability — I want pieces that last</button>
-        <button class="option-btn" onclick="choose(0,'synth',this)"><span class="option-letter">D</span>Practicality: easy to care for</button>
+      <div class="q-num">01</div>
+      <div class="q-text">Kas jums svarbiausia renkantis drabužius?</div>
+      <div class="options-list">
+        <button class="option-btn" onclick="choose(0,'linen',this)"><span class="opt-letter">A</span>Laiko patikrintas elegancija, kuri tampa gražesnė su amžiumi</button>
+        <button class="option-btn" onclick="choose(0,'cotton',this)"><span class="opt-letter">B</span>Visą dieną trunkantis patogumas ir minkštumas</button>
+        <button class="option-btn" onclick="choose(0,'ramie',this)"><span class="opt-letter">C</span>Ilgaamžiškumas – noriu drabužių, kurie tarnaus metų metus</button>
+        <button class="option-btn" onclick="choose(0,'synth',this)"><span class="opt-letter">D</span>Praktika: lengva priežiūra, minimalios pastangos</button>
       </div>
     </div>
 
-    <!-- Q2 -->
     <div class="question-block" id="q2">
-      <div class="question-num">02</div>
-      <div class="question-text">How do you feel about a fabric that wrinkles?</div>
-      <div class="options-grid">
-        <button class="option-btn" onclick="choose(1,'linen',this)"><span class="option-letter">A</span>Love it — wrinkles add natural character</button>
-        <button class="option-btn" onclick="choose(1,'cotton',this)"><span class="option-letter">B</span>Acceptable if I can iron it out easily</button>
-        <button class="option-btn" onclick="choose(1,'ramie',this)"><span class="option-letter">C</span>Prefer something slightly stiffer and structured</button>
-        <button class="option-btn" onclick="choose(1,'synth',this)"><span class="option-letter">D</span>No thanks — I want crease-free always</button>
+      <div class="q-num">02</div>
+      <div class="q-text">Kaip vertinate audinius, kurie glemžiasi?</div>
+      <div class="options-list">
+        <button class="option-btn" onclick="choose(1,'linen',this)"><span class="opt-letter">A</span>Man patinka – raukšlės suteikia natūralaus charakterio</button>
+        <button class="option-btn" onclick="choose(1,'cotton',this)"><span class="opt-letter">B</span>Tinka, jei galiu lengvai išlyginti</button>
+        <button class="option-btn" onclick="choose(1,'ramie',this)"><span class="opt-letter">C</span>Verčiau renkuosi šiek tiek standesnį, struktūrišką audinį</button>
+        <button class="option-btn" onclick="choose(1,'synth',this)"><span class="opt-letter">D</span>Ne – noriu, kad drabužiai visada atrodytų tvarkingi</button>
       </div>
     </div>
 
-    <!-- Q3 -->
     <div class="question-block" id="q3">
-      <div class="question-num">03</div>
-      <div class="question-text">What climate do you mostly dress for?</div>
-      <div class="options-grid">
-        <button class="option-btn" onclick="choose(2,'linen',this)"><span class="option-letter">A</span>Warm summers — I need breathability</button>
-        <button class="option-btn" onclick="choose(2,'cotton',this)"><span class="option-letter">B</span>Variable seasons — versatility matters</button>
-        <button class="option-btn" onclick="choose(2,'ramie',this)"><span class="option-letter">C</span>Hot and humid — moisture must vanish fast</button>
-        <button class="option-btn" onclick="choose(2,'synth',this)"><span class="option-letter">D</span>Active outdoors — I need performance</button>
+      <div class="q-num">03</div>
+      <div class="q-text">Kokiam klimatui dažniausiai renkatės?</div>
+      <div class="options-list">
+        <button class="option-btn" onclick="choose(2,'linen',this)"><span class="opt-letter">A</span>Šiltos vasaros – svarbiausia kvėpuojamumas</button>
+        <button class="option-btn" onclick="choose(2,'cotton',this)"><span class="opt-letter">B</span>Kintantys sezonai – reikalingas universalumas</button>
+        <button class="option-btn" onclick="choose(2,'ramie',this)"><span class="opt-letter">C</span>Karšta ir drėgna – drėgmė turi išgaruoti greitai</button>
+        <button class="option-btn" onclick="choose(2,'synth',this)"><span class="opt-letter">D</span>Aktyvus laisvalaikis lauke – reikia funkcinių savybių</button>
       </div>
     </div>
 
-    <!-- Q4 -->
     <div class="question-block" id="q4">
-      <div class="question-num">04</div>
-      <div class="question-text">How important is sustainability to your purchasing decisions?</div>
-      <div class="options-grid">
-        <button class="option-btn" onclick="choose(3,'linen',this)"><span class="option-letter">A</span>Essential — I only want low-impact materials</button>
-        <button class="option-btn" onclick="choose(3,'cotton',this)"><span class="option-letter">B</span>Important — organic or natural preferred</button>
-        <button class="option-btn" onclick="choose(3,'ramie',this)"><span class="option-letter">C</span>Very — I'm interested in lesser-known eco fibres</button>
-        <button class="option-btn" onclick="choose(3,'synth',this)"><span class="option-letter">D</span>I balance sustainability with function</button>
+      <div class="q-num">04</div>
+      <div class="q-text">Kiek svarbus jums tvarumas perkant drabužius?</div>
+      <div class="options-list">
+        <button class="option-btn" onclick="choose(3,'linen',this)"><span class="opt-letter">A</span>Būtinas – renkuosi tik mažo poveikio medžiagas</button>
+        <button class="option-btn" onclick="choose(3,'cotton',this)"><span class="opt-letter">B</span>Svarbus – teikiu pirmenybę natūraliems ar organiniams audiniams</button>
+        <button class="option-btn" onclick="choose(3,'ramie',this)"><span class="opt-letter">C</span>Labai svarbus – domina mažiau žinomi ekologiški pluoštai</button>
+        <button class="option-btn" onclick="choose(3,'synth',this)"><span class="opt-letter">D</span>Derinu tvarumą su funkcionalumu</button>
       </div>
     </div>
 
-    <!-- Q5 -->
     <div class="question-block" id="q5">
-      <div class="question-num">05</div>
-      <div class="question-text">Which word best describes your personal style?</div>
-      <div class="options-grid">
-        <button class="option-btn" onclick="choose(4,'linen',this)"><span class="option-letter">A</span>Effortless and understated</button>
-        <button class="option-btn" onclick="choose(4,'cotton',this)"><span class="option-letter">B</span>Relaxed and approachable</button>
-        <button class="option-btn" onclick="choose(4,'ramie',this)"><span class="option-letter">C</span>Structured and refined</button>
-        <button class="option-btn" onclick="choose(4,'synth',this)"><span class="option-letter">D</span>Modern and functional</button>
+      <div class="q-num">05</div>
+      <div class="q-text">Kuris žodis geriausiai apibūdina jūsų stilių?</div>
+      <div class="options-list">
+        <button class="option-btn" onclick="choose(4,'linen',this)"><span class="opt-letter">A</span>Nenorimas ir nepretenzingas</button>
+        <button class="option-btn" onclick="choose(4,'cotton',this)"><span class="opt-letter">B</span>Atsipalaidavęs ir draugiškas</button>
+        <button class="option-btn" onclick="choose(4,'ramie',this)"><span class="opt-letter">C</span>Struktūrizuotas ir rafinuotas</button>
+        <button class="option-btn" onclick="choose(4,'synth',this)"><span class="opt-letter">D</span>Modernus ir funkcionalus</button>
       </div>
     </div>
 
-    <!-- Q6 -->
     <div class="question-block" id="q6">
-      <div class="question-num">06</div>
-      <div class="question-text">How do you prefer to care for your garments?</div>
-      <div class="options-grid">
-        <button class="option-btn" onclick="choose(5,'linen',this)"><span class="option-letter">A</span>Hand-wash or gentle machine cycle — I'm patient</button>
-        <button class="option-btn" onclick="choose(5,'cotton',this)"><span class="option-letter">B</span>Standard machine wash, quick dry</button>
-        <button class="option-btn" onclick="choose(5,'ramie',this)"><span class="option-letter">C</span>Hand-wash only — worth it for a special fabric</button>
-        <button class="option-btn" onclick="choose(5,'synth',this)"><span class="option-letter">D</span>Wash and wear — minimal ironing</button>
+      <div class="q-num">06</div>
+      <div class="q-text">Kaip mieliau prižiūrite savo drabužius?</div>
+      <div class="options-list">
+        <button class="option-btn" onclick="choose(5,'linen',this)"><span class="opt-letter">A</span>Rankinis arba švelnus mašininis plovimas – esu kantrus</button>
+        <button class="option-btn" onclick="choose(5,'cotton',this)"><span class="opt-letter">B</span>Įprastas mašininis plovimas, greitas džiovinimas</button>
+        <button class="option-btn" onclick="choose(5,'ramie',this)"><span class="opt-letter">C</span>Tik rankinis plovimas – ypatingo audinio verta</button>
+        <button class="option-btn" onclick="choose(5,'synth',this)"><span class="opt-letter">D</span>Skalbti ir vilkėti – minimalus lyginimas</button>
       </div>
     </div>
 
-    <!-- Nav -->
-    <div class="quiz-nav" id="quiz-nav">
-      <button class="btn-back" id="btn-back" onclick="goBack()" disabled>← Back</button>
-      <button class="btn-next" id="btn-next" onclick="goNext()">Continue →</button>
+    <div class="quiz-nav">
+      <button class="btn-back" id="btn-back" onclick="goBack()" disabled>← Atgal</button>
+      <button class="btn-next" id="btn-next" onclick="goNext()">Toliau →</button>
     </div>
 
-  </div><!-- /quiz-body -->
+  </div>
 
   <!-- Result -->
   <div id="result-screen">
-    <div class="result-label">Your fabric match</div>
-
-    <svg class="fabric-icon" id="result-icon" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <!-- Woven texture icon -->
-      <rect x="8" y="8" width="56" height="56" rx="2" fill="none" stroke="#3A4A3A" stroke-width="1.5"/>
-      <line x1="8" y1="20" x2="64" y2="20" stroke="#3A4A3A" stroke-width="0.75" stroke-dasharray="4 2"/>
-      <line x1="8" y1="32" x2="64" y2="32" stroke="#3A4A3A" stroke-width="0.75" stroke-dasharray="4 2"/>
-      <line x1="8" y1="44" x2="64" y2="44" stroke="#3A4A3A" stroke-width="0.75" stroke-dasharray="4 2"/>
-      <line x1="8" y1="56" x2="64" y2="56" stroke="#3A4A3A" stroke-width="0.75" stroke-dasharray="4 2"/>
-      <line x1="20" y1="8" x2="20" y2="64" stroke="#7A6248" stroke-width="0.75" stroke-dasharray="4 2"/>
-      <line x1="32" y1="8" x2="32" y2="64" stroke="#7A6248" stroke-width="0.75" stroke-dasharray="4 2"/>
-      <line x1="44" y1="8" x2="44" y2="64" stroke="#7A6248" stroke-width="0.75" stroke-dasharray="4 2"/>
-      <line x1="56" y1="8" x2="56" y2="64" stroke="#7A6248" stroke-width="0.75" stroke-dasharray="4 2"/>
-    </svg>
-
-    <div class="result-fabric" id="result-fabric">Linen</div>
-    <div class="result-tagline" id="result-tagline">"The fabric of slow living"</div>
+    <div class="result-eyebrow">Jūsų audinys</div>
+    <div class="result-fabric-name" id="res-name"></div>
+    <div class="result-tagline" id="res-tagline"></div>
     <div class="result-divider"></div>
-    <div class="result-description" id="result-description">Your description here.</div>
+    <div class="result-desc" id="res-desc"></div>
+    <div class="traits" id="res-traits"></div>
 
-    <div class="traits" id="result-traits"></div>
-
-    <div class="score-bars" id="score-bars">
-      <div class="score-bar-row">
-        <div class="score-bar-label">Linen</div>
-        <div class="score-bar-track"><div class="score-bar-fill fill-linen" id="bar-linen"></div></div>
+    <div class="score-bars">
+      <div class="score-row">
+        <div class="score-label">Linas</div>
+        <div class="score-track"><div class="score-fill" id="bar-linen"></div></div>
+        <div class="score-pct" id="pct-linen">0%</div>
       </div>
-      <div class="score-bar-row">
-        <div class="score-bar-label">Cotton</div>
-        <div class="score-bar-track"><div class="score-bar-fill fill-cotton" id="bar-cotton"></div></div>
+      <div class="score-row">
+        <div class="score-label">Medvilnė</div>
+        <div class="score-track"><div class="score-fill" id="bar-cotton"></div></div>
+        <div class="score-pct" id="pct-cotton">0%</div>
       </div>
-      <div class="score-bar-row">
-        <div class="score-bar-label">Ramie/Hemp</div>
-        <div class="score-bar-track"><div class="score-bar-fill fill-ramie" id="bar-ramie"></div></div>
+      <div class="score-row">
+        <div class="score-label">Ramė / Kanapė</div>
+        <div class="score-track"><div class="score-fill" id="bar-ramie"></div></div>
+        <div class="score-pct" id="pct-ramie">0%</div>
       </div>
-      <div class="score-bar-row">
-        <div class="score-bar-label">Synthetic</div>
-        <div class="score-bar-track"><div class="score-bar-fill fill-synth" id="bar-synth"></div></div>
+      <div class="score-row">
+        <div class="score-label">Mišiniai</div>
+        <div class="score-track"><div class="score-fill" id="bar-synth"></div></div>
+        <div class="score-pct" id="pct-synth">0%</div>
       </div>
     </div>
 
-    <div>
-      <a href="#" class="result-cta" id="result-cta" target="_blank">Shop <span id="cta-fabric">Linen</span> at Baltas Miškas →</a>
-      <button class="btn-retake" onclick="retake()">Retake quiz</button>
+    <div class="result-actions">
+      <a href="#" class="btn-cta" id="res-cta" target="_blank">Peržiūrėti kolekciją →</a>
+      <button class="btn-retake" onclick="retake()">Pradėti iš naujo</button>
     </div>
   </div>
 
-</div><!-- /quiz-embed -->
+</div>
 
 <script>
   const TOTAL = 6;
   let current = 0;
-  let scores = { linen: 0, cotton: 0, ramie: 0, synth: 0 };
-  let answers = new Array(TOTAL).fill(null); // store chosen fabric per question
+  let scores = { linen:0, cotton:0, ramie:0, synth:0 };
+  let answers = new Array(TOTAL).fill(null);
 
+  // ─────────────────────────────────────────────────────────────
+  // REPLACE the ctaUrl values below with your actual page links
+  // ─────────────────────────────────────────────────────────────
   const FABRICS = {
     linen: {
-      name: 'Linen',
-      tagline: '"The fabric of slow living"',
-      description: 'You\'re drawn to timeless, effortless beauty. Linen is your fabric: woven from flax with minimal water and land use, it only grows more beautiful with every wash. Its natural wrinkles tell the story of a garment well worn. Linen breathes in summer heat, ages with grace, and carries the quiet confidence of someone who chooses quality over quantity.',
-      traits: ['Breathable', 'Biodegradable', 'Gets softer with age', 'Naturally antibacterial', 'Low water use'],
-      cta: 'https://www.baltasmiskas.lt/lietuvos-dizaineriu-drabuziai-ir-aksesuarai-moterims/lininiai-deriniai',
-      cta_label: 'Linen'
+      name: 'Linas',
+      tagline: '„Lėto gyvenimo audinys"',
+      desc: 'Jus traukia laiko patikrintas, neįpareigojantis grožis. Linas auginamas iš linų su minimaliu vandens ir žemės naudojimu – ir po kiekvieno plovimo tampa vis gražesnis. Natūralios raukšlės pasakoja apie gerai dėvėtą drabužį. Linas kvėpuoja vasaros kaitroje, senėja grakščiai ir spinduliuoja tylia pasitikėjimo savimi forma, būdinga tiems, kas renkasi kokybę vietoj kiekybės.',
+      traits: ['Kvėpuojantis', 'Biologiškai skaidus', 'Minkštėja skalbiant', 'Natūraliai antibakterinis', 'Mažai vandens naudoja'],
+      ctaUrl: 'LINO_KOLEKCIJOS_NUORODA',
+      ctaLabel: 'Peržiūrėti lino kolekciją →'
     },
     cotton: {
-      name: 'Cotton',
-      tagline: '"Soft, familiar, and endlessly versatile"',
-      description: 'You value comfort and practicality without sacrificing a natural feel against your skin. Cotton is the world\'s most beloved fibre for good reason: it\'s soft, absorbent, easy to care for, and available in every weight from feather-light to cosy. Choose organic cotton to reduce the environmental footprint and keep toxins away from your skin.',
-      traits: ['Ultra soft', 'Highly absorbent', 'Machine washable', 'Hypoallergenic', 'Versatile weight'],
-      cta: 'https://www.baltasmiskas.lt/lietuva-dizaineriu-drabuziai-ir-aksesuarai-moterims',
-      cta_label: 'Cotton'
+      name: 'Medvilnė',
+      tagline: '„Švelni, pažįstama ir be galo universali"',
+      desc: 'Jums svarbus patogumas ir praktiškumas neprarandant natūralaus pojūčio prie odos. Medvilnė naudojama daugiau nei bet kuris kitas pluoštas – ji minkšta, sugeria drėgmę, lengva prižiūrėti ir tinkama kiekvienam svoriui. Rinkitės ekologišką medvilnę – sumažinsite aplinkos poveikį ir apsaugosite odą nuo toksinų.',
+      traits: ['Labai minkšta', 'Gerai sugeria drėgmę', 'Skalbti mašina', 'Hipoalergeniškas', 'Universalus storis'],
+      ctaUrl: 'MEDVILNES_KOLEKCIJOS_NUORODA',
+      ctaLabel: 'Peržiūrėti medvilnės kolekciją →'
     },
     ramie: {
-      name: 'Ramie / Hemp',
-      tagline: '"The quiet revolutionary"',
-      description: 'You seek out fabrics with a story — those that go beyond mainstream and stand for something. Ramie (nettle-linen) and hemp are among the world\'s most ancient and resilient natural fibres. They\'re exceptionally strong, moisture-wicking, naturally resistant to mildew, and grow without pesticides. Structured, lasting, and earthy — these are fabrics for people who think ahead.',
-      traits: ['Strongest natural fibre', 'Naturally mould-resistant', 'Grows without pesticides', 'Gets stronger when wet', 'Very low ecological footprint'],
-      cta: 'https://www.baltasmiskas.lt/naujos-prekes',
-      cta_label: 'Natural fibres'
+      name: 'Ramė / Kanapė',
+      tagline: '„Tylus revoliucionierius"',
+      desc: 'Jus domina audiniai su istorija – tie, kurie peržengia įprastumą ir ką nors reiškia. Ramė ir kanapė yra vieni seniausių ir atspariausių natūralių pluoštų pasaulyje. Jie nepaprastai stiprūs, gerai šalina drėgmę, natūraliai atsparūs pelėsiui ir auginami be pesticidų. Struktūrizuoti, ilgaamžiai ir žemiški – tai audiniai žmonėms, kurie mąsto perspektyviai.',
+      traits: ['Stipriausias natūralus pluoštas', 'Atsparus pelėsiui', 'Be pesticidų', 'Drėgnas tampa stipresnis', 'Minimalus ekologinis pėdsakas'],
+      ctaUrl: 'RAMES_KOLEKCIJOS_NUORODA',
+      ctaLabel: 'Peržiūrėti kolekciją →'
     },
     synth: {
-      name: 'Performance Blends',
-      tagline: '"Function meets contemporary design"',
-      description: 'You need your clothes to work as hard as you do. Modern performance fabrics and thoughtfully engineered blends offer durability, shape retention, and easy care that purely natural fibres sometimes can\'t match. Look for blends that incorporate a high percentage of natural fibres alongside technical ones — you get the best of both worlds without compromising on aesthetics.',
-      traits: ['Shape-retaining', 'Easy-care', 'Durable', 'Wrinkle-resistant', 'Versatile for all seasons'],
-      cta: 'https://www.baltasmiskas.lt/naujos-prekes',
-      cta_label: 'New arrivals'
+      name: 'Funkciniai mišiniai',
+      tagline: '„Funkcija susitinka su šiuolaikišku dizainu"',
+      desc: 'Jums reikia, kad drabužiai dirbtų tiek pat intensyviai kaip ir jūs. Modernūs funkciniai audiniai ir apgalvoti mišiniai siūlo ilgaamžiškumą, formos išlaikymą ir lengvą priežiūrą, kurios grynai natūralūs pluoštai kartais negali užtikrinti. Ieškokite mišinių su aukštu natūralių pluoštų kiekiu – gausite geriausią iš abiejų pasaulių.',
+      traits: ['Išlaiko formą', 'Lengva priežiūra', 'Ilgaamžis', 'Nesiglemžia', 'Universalus visoms progoms'],
+      ctaUrl: 'NAUJU_PREKIU_NUORODA',
+      ctaLabel: 'Peržiūrėti naujienas →'
     }
   };
 
-  function choose(qIndex, fabric, btn) {
-    // Clear previous selection in this question
-    const block = document.getElementById('q' + (qIndex + 1));
-    block.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+  function choose(qIdx, fabric, btn) {
+    document.getElementById('q' + (qIdx+1))
+      .querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
     btn.classList.add('selected');
-    answers[qIndex] = fabric;
-
-    // Show next button
-    const nextBtn = document.getElementById('btn-next');
-    nextBtn.classList.add('visible');
-    nextBtn.textContent = qIndex === TOTAL - 1 ? 'See my fabric →' : 'Continue →';
+    answers[qIdx] = fabric;
+    const n = document.getElementById('btn-next');
+    n.classList.add('visible');
+    n.textContent = qIdx === TOTAL-1 ? 'Žiūrėti rezultatą →' : 'Toliau →';
   }
 
   function goNext() {
-    if (answers[current] === null) return;
+    if (!answers[current]) return;
     scores[answers[current]]++;
     current++;
-
-    if (current >= TOTAL) {
-      showResult();
-    } else {
-      showQuestion(current);
-    }
+    if (current >= TOTAL) showResult(); else showQuestion(current);
   }
 
   function goBack() {
     if (current === 0) return;
-    // Undo last score
-    if (answers[current - 1]) {
-      scores[answers[current - 1]]--;
-    }
+    if (answers[current-1]) scores[answers[current-1]]--;
     current--;
     showQuestion(current);
   }
 
   function showQuestion(idx) {
     document.querySelectorAll('.question-block').forEach(b => b.classList.remove('active'));
-    const block = document.getElementById('q' + (idx + 1));
+    const block = document.getElementById('q' + (idx+1));
     block.classList.add('active');
-
-    // Restore selection if user goes back
     if (answers[idx]) {
-      // find the button with onclick containing the answer
       block.querySelectorAll('.option-btn').forEach(btn => {
-        const onclickAttr = btn.getAttribute('onclick');
-        if (onclickAttr && onclickAttr.includes("'" + answers[idx] + "'")) {
+        if ((btn.getAttribute('onclick') || '').includes("'"+answers[idx]+"'"))
           btn.classList.add('selected');
-        }
       });
     }
-
-    // Update progress
     const pct = Math.round((idx / TOTAL) * 100);
-    document.getElementById('progress-fill').style.width = pct + '%';
-    document.getElementById('progress-text').textContent = 'Question ' + (idx + 1) + ' of ' + TOTAL;
-    document.getElementById('progress-pct').textContent = pct + '%';
-
-    // Nav buttons
+    document.getElementById('prog-fill').style.width = pct + '%';
+    document.getElementById('prog-text').textContent = (idx+1) + ' / ' + TOTAL + ' klausimas';
+    document.getElementById('prog-pct').textContent = pct + '%';
     document.getElementById('btn-back').disabled = idx === 0;
-    const nextBtn = document.getElementById('btn-next');
+    const n = document.getElementById('btn-next');
     if (answers[idx]) {
-      nextBtn.classList.add('visible');
-      nextBtn.textContent = idx === TOTAL - 1 ? 'See my fabric →' : 'Continue →';
+      n.classList.add('visible');
+      n.textContent = idx === TOTAL-1 ? 'Žiūrėti rezultatą →' : 'Toliau →';
     } else {
-      nextBtn.classList.remove('visible');
+      n.classList.remove('visible');
     }
   }
 
   function showResult() {
-    // Count scores
-    const winner = Object.entries(scores).sort((a, b) => b[1] - a[1])[0][0];
-    const total = Object.values(scores).reduce((a, b) => a + b, 0);
-    const fabric = FABRICS[winner];
-
-    // Fill result
-    document.getElementById('result-fabric').textContent = fabric.name;
-    document.getElementById('result-tagline').textContent = fabric.tagline;
-    document.getElementById('result-description').textContent = fabric.description;
-    document.getElementById('result-cta').href = fabric.cta;
-    document.getElementById('cta-fabric').textContent = fabric.cta_label;
-
-    // Traits
-    const traitsEl = document.getElementById('result-traits');
-    traitsEl.innerHTML = fabric.traits.map(t => `<span class="trait">${t}</span>`).join('');
-
-    // Hide quiz, show result
-    document.getElementById('progress-wrap').style.display = 'none';
+    const total = Object.values(scores).reduce((a,b) => a+b, 0);
+    const winner = Object.entries(scores).sort((a,b) => b[1]-a[1])[0][0];
+    const f = FABRICS[winner];
+    document.getElementById('res-name').textContent = f.name;
+    document.getElementById('res-tagline').textContent = f.tagline;
+    document.getElementById('res-desc').textContent = f.desc;
+    document.getElementById('res-cta').href = f.ctaUrl;
+    document.getElementById('res-cta').textContent = f.ctaLabel;
+    document.getElementById('res-traits').innerHTML =
+      f.traits.map(t => `<span class="trait">${t}</span>`).join('');
+    document.getElementById('progress-area').style.display = 'none';
     document.getElementById('quiz-body').style.display = 'none';
-    const rs = document.getElementById('result-screen');
-    rs.classList.add('show');
-
-    // Animate bars after a tick
+    document.getElementById('result-screen').classList.add('show');
     setTimeout(() => {
-      ['linen','cotton','ramie','synth'].forEach(f => {
-        const pct = total > 0 ? Math.round((scores[f] / total) * 100) : 0;
-        document.getElementById('bar-' + f).style.width = pct + '%';
+      ['linen','cotton','ramie','synth'].forEach(k => {
+        const p = total > 0 ? Math.round((scores[k]/total)*100) : 0;
+        document.getElementById('bar-'+k).style.width = p+'%';
+        document.getElementById('pct-'+k).textContent = p+'%';
       });
     }, 200);
   }
 
   function retake() {
-    scores = { linen: 0, cotton: 0, ramie: 0, synth: 0 };
+    scores = { linen:0, cotton:0, ramie:0, synth:0 };
     answers = new Array(TOTAL).fill(null);
     current = 0;
-
-    // Reset all buttons
     document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
-
     document.getElementById('result-screen').classList.remove('show');
-    document.getElementById('progress-wrap').style.display = '';
+    document.getElementById('progress-area').style.display = '';
     document.getElementById('quiz-body').style.display = '';
-
     showQuestion(0);
   }
 
-  // Init
   showQuestion(0);
 </script>
 </body>
