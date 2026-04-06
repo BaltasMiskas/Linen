@@ -15,6 +15,7 @@
     --mid: #666666;
     --light: #e5e5e5;
     --bg: #ffffff;
+    --soft-bg: #fef9ee;
   }
 
   body {
@@ -60,9 +61,8 @@
     line-height: 1.65;
   }
 
-  /* Progress */
+  /* Progress Bar */
   .progress-area { margin-bottom: 36px; }
-
   .progress-meta {
     display: flex;
     justify-content: space-between;
@@ -72,14 +72,8 @@
     color: var(--light);
     margin-bottom: 8px;
   }
-
   .progress-track { height: 1px; background: var(--light); }
-
-  .progress-fill {
-    height: 100%;
-    background: var(--accent);
-    transition: width 0.45s ease;
-  }
+  .progress-fill { height: 100%; background: var(--accent); transition: width 0.45s ease; }
 
   /* Questions */
   .question-block { display: none; animation: fadeIn 0.3s ease forwards; }
@@ -90,29 +84,10 @@
     to   { opacity: 1; transform: translateY(0); }
   }
 
-  .q-num {
-    font-size: 11px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--light);
-    margin-bottom: 10px;
-  }
+  .q-num { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--light); margin-bottom: 10px; }
+  .q-text { font-size: clamp(16px, 2.5vw, 19px); font-weight: 400; color: var(--ink); margin-bottom: 24px; line-height: 1.45; }
 
-  .q-text {
-    font-size: clamp(16px, 2.5vw, 19px);
-    font-weight: 400;
-    color: var(--ink);
-    margin-bottom: 24px;
-    line-height: 1.45;
-    letter-spacing: -0.01em;
-  }
-
-  .options-list {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
+  .options-list { display: flex; flex-direction: column; gap: 8px; }
   .option-btn {
     background: none;
     border: 1px solid var(--light);
@@ -123,224 +98,63 @@
     font-size: 14px;
     font-weight: 300;
     color: var(--ink);
-    line-height: 1.45;
-    transition: border-color 0.15s, color 0.15s, background 0.15s;
+    transition: all 0.15s;
     display: flex;
     align-items: flex-start;
     gap: 12px;
   }
-
   .option-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .option-btn.selected { border-color: var(--accent); color: var(--accent); background: var(--soft-bg); }
 
-  .option-btn.selected {
-    border-color: var(--accent);
-    color: var(--accent);
-    background: #fef9ee;
-  }
-
-  .opt-letter {
-    font-size: 11px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: inherit;
-    opacity: 0.5;
-    padding-top: 2px;
-    flex-shrink: 0;
-  }
-
-  /* Nav */
-  .quiz-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 28px;
-  }
-
-  .btn-back {
-    background: none;
-    border: none;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 12px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--light);
-    cursor: pointer;
-    padding: 0;
-    transition: color 0.15s;
-  }
-
-  .btn-back:not(:disabled):hover { color: var(--mid); }
+  /* Navigation */
+  .quiz-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 28px; }
+  .btn-back { background: none; border: none; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--light); cursor: pointer; transition: color 0.2s; }
+  .btn-back:hover { color: var(--mid); }
   .btn-back:disabled { opacity: 0; pointer-events: none; }
-
-  .btn-next {
-    background: var(--accent);
-    color: #fff;
-    border: none;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 12px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    padding: 12px 28px;
-    cursor: pointer;
-    transition: background 0.15s, opacity 0.2s;
-    font-weight: 500;
-    opacity: 0;
-    pointer-events: none;
-  }
-
+  .btn-next { background: var(--accent); color: #fff; border: none; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; padding: 12px 28px; cursor: pointer; opacity: 0; pointer-events: none; transition: background 0.2s; }
   .btn-next.visible { opacity: 1; pointer-events: all; }
   .btn-next:hover { background: var(--accent-hover); }
 
-  /* Result */
+  /* Results */
   #result-screen { display: none; animation: fadeIn 0.4s ease forwards; }
   #result-screen.show { display: block; }
+  .result-fabric-name { font-size: clamp(30px, 6vw, 46px); font-weight: 300; letter-spacing: -0.03em; margin-bottom: 4px; }
+  .result-tagline { font-size: 14px; font-style: italic; color: var(--mid); margin-bottom: 28px; }
+  .result-desc { font-size: 14px; font-weight: 300; color: var(--mid); line-height: 1.75; margin-bottom: 28px; }
+  
+  .traits { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 32px; }
+  .trait { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); border: 1px solid #f0d9b0; padding: 4px 12px; background: var(--soft-bg); }
 
-  .result-eyebrow {
-    font-size: 11px;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--accent);
-    font-weight: 500;
-    margin-bottom: 14px;
+  /* Newsletter Section */
+  .newsletter-wrap {
+    margin-top: 48px;
+    padding-top: 32px;
+    border-top: 1px solid var(--light);
+    text-align: left;
   }
-
-  .result-fabric-name {
-    font-size: clamp(30px, 6vw, 46px);
-    font-weight: 300;
-    letter-spacing: -0.03em;
+  .newsletter-title {
+    font-size: 16px;
+    font-weight: 400;
     color: var(--ink);
-    margin-bottom: 4px;
-  }
-
-  .result-tagline {
-    font-size: 14px;
-    font-style: italic;
-    font-weight: 300;
-    color: var(--mid);
-    margin-bottom: 28px;
-  }
-
-  .result-divider {
-    width: 32px;
-    height: 1px;
-    background: var(--accent);
-    margin-bottom: 24px;
-  }
-
-  .result-desc {
-    font-size: 14px;
-    font-weight: 300;
-    color: var(--mid);
-    line-height: 1.75;
-    margin-bottom: 28px;
-  }
-
-  .traits {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-bottom: 32px;
-  }
-
-  .trait {
-    font-size: 11px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--accent);
-    border: 1px solid #f0d9b0;
-    padding: 4px 12px;
-    background: #fef9ee;
-  }
-
-  /* Score bars */
-  .score-bars { margin-bottom: 36px; }
-
-  .score-row {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    margin-bottom: 10px;
-  }
-
-  .score-label {
-    font-size: 11px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--mid);
-    width: 100px;
-    flex-shrink: 0;
-    font-weight: 300;
-  }
-
-  .score-track { flex: 1; height: 1px; background: var(--light); }
-
-  .score-fill {
-    height: 100%;
-    background: var(--accent);
-    width: 0;
-    transition: width 0.9s ease;
-  }
-
-  .score-pct {
-    font-size: 11px;
-    color: var(--light);
-    width: 32px;
-    text-align: right;
-    flex-shrink: 0;
+    margin-bottom: 20px;
+    line-height: 1.4;
   }
 
   /* CTAs */
-  .result-actions {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-  }
+  .result-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
+  .btn-cta { background: var(--accent); color: #fff; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; padding: 14px 28px; text-decoration: none; display: inline-block; font-weight: 500; }
+  .btn-retake { background: none; border: 1px solid var(--light); color: var(--mid); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; padding: 13px 24px; cursor: pointer; }
 
-  .btn-cta {
-    background: var(--accent);
-    color: #fff;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 12px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    padding: 14px 28px;
-    text-decoration: none;
-    font-weight: 500;
-    transition: background 0.15s;
-    display: inline-block;
-  }
-
-  .btn-cta:hover { background: var(--accent-hover); }
-
-  .btn-retake {
-    background: none;
-    border: 1px solid var(--light);
-    color: var(--mid);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 12px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    padding: 13px 24px;
-    cursor: pointer;
-    font-weight: 300;
-    transition: border-color 0.15s, color 0.15s;
-  }
-
-  .btn-retake:hover { border-color: var(--mid); color: var(--ink); }
-
-  @media (max-width: 480px) {
-    .btn-cta, .btn-retake { width: 100%; text-align: center; }
-  }
+  @media (max-width: 480px) { .btn-cta, .btn-retake { width: 100%; text-align: center; } }
 </style>
 </head>
 <body>
 
 <div class="quiz-wrap">
-
   <div class="quiz-header">
     <div class="quiz-eyebrow">Baltas Miškas · Audinio gidas</div>
     <h1 class="quiz-title">Koks audinys tinka jums?</h1>
-    <p class="quiz-sub">Atsakykite į 6 klausimus ir sužinokite, kuris natūralus pluoštas geriausiai atitinka jūsų gyvenimo būdą.</p>
+    <p class="quiz-sub">Atraskite savo idealų natūralų pluoštą per 6 trumpus klausimus.</p>
   </div>
 
   <div class="progress-area" id="progress-area">
@@ -348,76 +162,73 @@
       <span id="prog-text">1 / 6 klausimas</span>
       <span id="prog-pct">0%</span>
     </div>
-    <div class="progress-track">
-      <div class="progress-fill" id="prog-fill" style="width:0%"></div>
-    </div>
+    <div class="progress-track"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
   </div>
 
   <div id="quiz-body">
-
     <div class="question-block active" id="q1">
       <div class="q-num">01</div>
-      <div class="q-text">Kas jums svarbiausia renkantis drabužį?</div>
+      <div class="q-text">Kas jums svarbiausia renkantis naują drabužį?</div>
       <div class="options-list">
-        <button class="option-btn" onclick="choose(0,'linen',this)"><span class="opt-letter">A</span>Laiko patikrinta elegancija, kuri bėgant metams tik gražėja</button>
-        <button class="option-btn" onclick="choose(0,'cotton',this)"><span class="opt-letter">B</span>Minkštumas ir neįpareigojantis komfortas visą dieną</button>
-        <button class="option-btn" onclick="choose(0,'ramie',this)"><span class="opt-letter">C</span>Ilgaamžiškumas – ieškau daiktų, kurie tarnautų dešimtmečius</button>
-        <button class="option-btn" onclick="choose(0,'synth',this)"><span class="opt-letter">D</span>Praktiškumas – lengva priežiūra ir minimalios pastangos</button>
+        <button class="option-btn" onclick="choose(0,'linen',this)">Laiko patikrinta elegancija ir natūralumas</button>
+        <button class="option-btn" onclick="choose(0,'cotton',this)">Minkštumas ir neįpareigojantis komfortas kasdien</button>
+        <button class="option-btn" onclick="choose(0,'ramie',this)">Išskirtinis tvirtumas ir audinio istorija</button>
+        <button class="option-btn" onclick="choose(0,'silk',this)">Rafinuota prabanga ir ypatingas švelnumas odai</button>
       </div>
     </div>
 
     <div class="question-block" id="q2">
       <div class="q-num">02</div>
-      <div class="q-text">Kaip vertinate audinio glamžumą?</div>
+      <div class="q-text">Kaip vertinate audinio tekstūrą ir glamžumą?</div>
       <div class="options-list">
-        <button class="option-btn" onclick="choose(1,'linen',this)"><span class="opt-letter">A</span>Mėgstu – natūralios raukšlės suteikia drabužiui gyvumo</button>
-        <button class="option-btn" onclick="choose(1,'cotton',this)"><span class="opt-letter">B</span>Toleruoju, jei audinys lengvai išlyginamas</button>
-        <button class="option-btn" onclick="choose(1,'ramie',this)"><span class="opt-letter">C</span>Renkuosi standesnį, savo formą geriau išlaikantį audinį</button>
-        <button class="option-btn" onclick="choose(1,'synth',this)"><span class="opt-letter">D</span>Vengiu – noriu, kad drabužis visada atrodytų nepriekaištingai</button>
+        <button class="option-btn" onclick="choose(1,'linen',this)">Mėgstu natūralias raukšles – tai suteikia gyvumo</button>
+        <button class="option-btn" onclick="choose(1,'cotton',this)">Toleruoju, jei audinys lengvai išlyginamas</button>
+        <button class="option-btn" onclick="choose(1,'ramie',this)">Renkuosi standesnį, savo formą laikantį audinį</button>
+        <button class="option-btn" onclick="choose(1,'silk',this)">Ieškau lygaus, krentančio ir švelniai žvilgančio paviršiaus</button>
       </div>
     </div>
 
     <div class="question-block" id="q3">
       <div class="q-num">03</div>
-      <div class="q-text">Kokiam orui dažniausiai ieškote naujų gaminių?</div>
+      <div class="q-text">Kokiam orui dažniausiai ieškote papildymo spintai?</div>
       <div class="options-list">
-        <button class="option-btn" onclick="choose(2,'linen',this)"><span class="opt-letter">A</span>Karštai vasarai – svarbiausia, kad oda laisvai kvėpuotų</button>
-        <button class="option-btn" onclick="choose(2,'cotton',this)"><span class="opt-letter">B</span>Lietuviškiems sezonams – reikia universalaus sluoksniavimo</button>
-        <button class="option-btn" onclick="choose(2,'ramie',this)"><span class="opt-letter">C</span>Drėgnam klimatui – drėgmė turi išgaruoti akimirksniu</button>
-        <button class="option-btn" onclick="choose(2,'synth',this)"><span class="opt-letter">D</span>Aktyviam laisvalaikiui – vertinu funkcines savybes</button>
+        <button class="option-btn" onclick="choose(2,'linen',this)">Karštai vasarai – oda turi laisvai kvėpuoti</button>
+        <button class="option-btn" onclick="choose(2,'cotton',this)">Visiems lietuviškiems sezonams – vertinu universalumą</button>
+        <button class="option-btn" onclick="choose(2,'ramie',this)">Drėgnam klimatui – drėgmė turi greitai išgaruoti</button>
+        <button class="option-btn" onclick="choose(2,'silk',this)">Ieškau audinio, kuris vėsintų vasarą ir šildytų vėsesniu oru</button>
       </div>
     </div>
 
     <div class="question-block" id="q4">
       <div class="q-num">04</div>
-      <div class="q-text">Kiek jums svarbus tvarumas mados industrijoje?</div>
+      <div class="q-text">Kiek jums svarbi lėtoji mada ir tvarumas?</div>
       <div class="options-list">
-        <button class="option-btn" onclick="choose(3,'linen',this)"><span class="opt-letter">A</span>Prioritetas – renkuosi tik mažiausią pėdsaką paliekančius pluoštus</button>
-        <button class="option-btn" onclick="choose(3,'cotton',this)"><span class="opt-letter">B</span>Svarbus – teikiu pirmenybę natūralumui ir ekologiškai medvilnei</button>
-        <button class="option-btn" onclick="choose(3,'ramie',this)"><span class="opt-letter">C</span>Labai svarbus – domiuosi inovatyviais augaliniais pluoštais</button>
-        <button class="option-btn" onclick="choose(3,'synth',this)"><span class="opt-letter">D</span>Svarbu, bet funkcionalumas man išlieka pirmoje vietoje</button>
+        <button class="option-btn" onclick="choose(3,'linen',this)">Tai prioritetas – renkuosi tik mažiausią pėdsaką paliekančius pluoštus</button>
+        <button class="option-btn" onclick="choose(3,'cotton',this)">Svarbu – renkuosi natūralią ir kokybišką medvilnę</button>
+        <button class="option-btn" onclick="choose(3,'ramie',this)">Labai svarbu – domiuosi inovatyviais augaliniais pluoštais</button>
+        <button class="option-btn" onclick="choose(3,'silk',this)">Vertinu tai, kas tauri, natūralu ir tarnauja metų metus</button>
       </div>
     </div>
 
     <div class="question-block" id="q5">
       <div class="q-num">05</div>
-      <div class="q-text">Kuris apibūdinimas geriausiai atspindi jūsų stilių?</div>
+      <div class="q-text">Kuris stiliaus apibūdinimas jums artimiausias?</div>
       <div class="options-list">
-        <button class="option-btn" onclick="choose(4,'linen',this)"><span class="opt-letter">A</span>Bohemiškas, laisvas ir autentiškas</button>
-        <button class="option-btn" onclick="choose(4,'cotton',this)"><span class="opt-letter">B</span>Kasdienis (casual), jaukus ir šiltas</button>
-        <button class="option-btn" onclick="choose(4,'ramie',this)"><span class="opt-letter">C</span>Minimalistinis, architektūriškas ir prabangus</button>
-        <button class="option-btn" onclick="choose(4,'synth',this)"><span class="opt-letter">D</span>Modernus, dinamiškas ir techniškas</button>
+        <button class="option-btn" onclick="choose(4,'linen',this)">Laisvas, autentiškas ir bohemiškas</button>
+        <button class="option-btn" onclick="choose(4,'cotton',this)">Jaukus, kasdienis ir patikimas</button>
+        <button class="option-btn" onclick="choose(4,'ramie',this)">Minimalistinis, architektūriškas ir prabangus</button>
+        <button class="option-btn" onclick="choose(4,'silk',this)">Rafinuotas, moteriškas ir elegantiškas</button>
       </div>
     </div>
 
     <div class="question-block" id="q6">
       <div class="q-num">06</div>
-      <div class="q-text">Kaip mieliau prižiūrite savo drabužius?</div>
+      <div class="q-text">Drabužių priežiūra jums yra:</div>
       <div class="options-list">
-        <button class="option-btn" onclick="choose(5,'linen',this)"><span class="opt-letter">A</span>Mėgaujuos priežiūros ritualais (skalbimas rankomis ar tausojantis režimas)</button>
-        <button class="option-btn" onclick="choose(5,'cotton',this)"><span class="opt-letter">B</span>Įprastas skalbimas mašina ir džiovinimas – greita ir paprasta</button>
-        <button class="option-btn" onclick="choose(5,'ramie',this)"><span class="opt-letter">C</span>Skiriu ypatingą dėmesį audiniams, kurie reikalauja atidumo</button>
-        <button class="option-btn" onclick="choose(5,'synth',this)"><span class="opt-letter">D</span>Skalbiu ir vilkiu – lyginimas man nėra malonumas</button>
+        <button class="option-btn" onclick="choose(5,'linen',this)">Mielas ritualas – vertinu natūralių daiktų priežiūrą</button>
+        <button class="option-btn" onclick="choose(5,'cotton',this)">Paprastas procesas – skalbiu ir džiovinu mašina</button>
+        <button class="option-btn" onclick="choose(5,'ramie',this)">Atsakingas darbas – geras audinys vertas mano laiko</button>
+        <button class="option-btn" onclick="choose(5,'silk',this)">Ypatingas dėmesys – tausoju prabangius pluoštus</button>
       </div>
     </div>
 
@@ -425,92 +236,72 @@
       <button class="btn-back" id="btn-back" onclick="goBack()" disabled>← Atgal</button>
       <button class="btn-next" id="btn-next" onclick="goNext()">Toliau →</button>
     </div>
-
   </div>
 
   <div id="result-screen">
     <div class="result-eyebrow">Jūsų idealus pasirinkimas</div>
     <div class="result-fabric-name" id="res-name"></div>
     <div class="result-tagline" id="res-tagline"></div>
-    <div class="result-divider"></div>
+    <div class="result-divider" style="width: 32px; height: 1px; background: var(--accent); margin-bottom: 24px;"></div>
     <div class="result-desc" id="res-desc"></div>
     <div class="traits" id="res-traits"></div>
-
-    <div class="score-bars">
-      <div class="score-row">
-        <div class="score-label">Linas</div>
-        <div class="score-track"><div class="score-fill" id="bar-linen"></div></div>
-        <div class="score-pct" id="pct-linen">0%</div>
-      </div>
-      <div class="score-row">
-        <div class="score-label">Medvilnė</div>
-        <div class="score-track"><div class="score-fill" id="bar-cotton"></div></div>
-        <div class="score-pct" id="pct-cotton">0%</div>
-      </div>
-      <div class="score-row">
-        <div class="score-label">Ramė / Kanapė</div>
-        <div class="score-track"><div class="score-fill" id="bar-ramie"></div></div>
-        <div class="score-pct" id="pct-ramie">0%</div>
-      </div>
-      <div class="score-row">
-        <div class="score-label">Naujienos</div>
-        <div class="score-track"><div class="score-fill" id="bar-synth"></div></div>
-        <div class="score-pct" id="pct-synth">0%</div>
-      </div>
-    </div>
 
     <div class="result-actions">
       <a href="#" class="btn-cta" id="res-cta" target="_blank">Atrasti kolekciją →</a>
       <button class="btn-retake" onclick="retake()">Pradėti iš naujo</button>
     </div>
-  </div>
 
+    <div class="newsletter-wrap">
+      <h3 class="newsletter-title">Nepraleiskite naujų būdų atrasti dėmesingai atrinktą lietuvišką madą</h3>
+      <div class="ml-embedded" data-form="179555461223154701"></div>
+    </div>
+  </div>
 </div>
 
 <script>
   const TOTAL = 6;
   let current = 0;
-  let scores = { linen:0, cotton:0, ramie:0, synth:0 };
+  let scores = { linen:0, cotton:0, ramie:0, silk:0 };
   let answers = new Array(TOTAL).fill(null);
 
   const FABRICS = {
     linen: {
       name: 'Linas',
-      tagline: '„Lėto gyvenimo filosofija“',
-      desc: 'Jus traukia autentiškas, neįpareigojantis grožis. Linas auginamas tausojant gamtą, o po kiekvieno skalbimo tampa vis minkštesnis ir malonesnis. Natūralios jo raukšlės pasakoja apie laisvę ir kokybę. Tai audinys, kuris spinduliuoja ramybe ir pasitikėjimu savimi.',
-      traits: ['Kvėpuojantis', 'Draugiškas gamtai', 'Minkštėja dėvint', 'Antibakterinis', 'Ilgaamžis'],
-      ctaUrl: 'https://baltasmiskas.lt/produkto-kategorija/linas/',
+      tagline: '„Lėtesnio gyvenimo filosofija“',
+      desc: 'Jus traukia autentiškas, neįpareigojantis grožis. Linas po kiekvieno skalbimo tampa vis minkštesnis, o jo raukšlės pasakoja apie laisvę. Tai audinys tiems, kurie renkasi kokybę vietoj kiekybės.',
+      traits: ['Kvėpuojantis', 'Tvarus', 'Minkštėja dėvint', 'Antibakterinis'],
+      ctaUrl: 'https://www.baltasmiskas.lt/paieska?q=linas',
       ctaLabel: 'Atrasti lino kolekciją →'
     },
     cotton: {
       name: 'Medvilnė',
       tagline: '„Švelnumas ir kasdienė laisvė“',
-      desc: 'Jums svarbiausia – komfortas ir universalumas. Medvilnė yra minkšta, puikiai sugeria drėgmę ir leidžia odai jaustis gaiviai. Tai saugus ir jaukus pasirinkimas tiems, kurie vertina natūralumą, bet ieško paprastos drabužių priežiūros.',
-      traits: ['Minkšta tekstūra', 'Hipoalergiška', 'Lengva priežiūra', 'Universali', 'Laidi orui'],
-      ctaUrl: 'https://baltasmiskas.lt/produkto-kategorija/medvilne/',
+      desc: 'Jums svarbiausia – komfortas. Medvilnė yra minkšta, puikiai sugeria drėgmę ir leidžia odai jaustis gaiviai. Tai jaukus pasirinkimas, derinantis natūralumą su paprasta priežiūra.',
+      traits: ['Minkšta', 'Hipoalergiška', 'Lengva priežiūra', 'Universali'],
+      ctaUrl: 'https://www.baltasmiskas.lt/paieska?q=medvilne',
       ctaLabel: 'Rinktis medvilnę →'
     },
     ramie: {
-      name: 'Ramė / Kanapė',
+      name: 'Ramė',
       tagline: '„Struktūra ir taurus atsparumas“',
-      desc: 'Jus domina audiniai su charakteriu. Ramė ir kanapė yra vieni stipriausių pluoštų pasaulyje. Jie pasižymi prabangiu spindesiu, puikiai išlaiko formą ir yra neįtikėtinai atsparūs. Tai pasirinkimas ieškantiems unikalumo ir tvarios prabangos pojūčio.',
-      traits: ['Ypač tvirtas pluoštas', 'Prabangus spindesys', 'Natūraliai tvaresnis', 'Greitai džiūsta', 'Mažas ekologinis pėdsakas'],
-      ctaUrl: 'https://baltasmiskas.lt/produkto-kategorija/rame/',
+      desc: 'Jus domina audiniai su charakteriu. Ramė pasižymi prabangiu spindesiu ir neįtikėtinu tvirtumu. Tai pasirinkimas ieškantiems unikalumo ir tvarios prabangos.',
+      traits: ['Ypač tvirtas', 'Prabangus spindesys', 'Greitai džiūsta', 'Tvarus'],
+      ctaUrl: 'https://www.baltasmiskas.lt/paieska?q=romy',
       ctaLabel: 'Pažinti ramės kolekciją →'
     },
-    synth: {
-      name: 'Naujienos',
-      tagline: '„Funkcionalumas ir modernus ritmas“',
-      desc: 'Jums reikia drabužių, kurie prisitaikytų prie jūsų tempo. Vertinate formas, kurios nesiglamžo ir išlaiko estetinę išvaizdą visą dieną. Mūsų naujausiose kolekcijose rasite apgalvotus mišinius, kurie sujungia natūralumą su šiuolaikišku praktiškumu.',
-      traits: ['Nesiglamžo', 'Išlaiko formą', 'Atsparus dėvėjimuisi', 'Modernus dizainas', 'Skalbti ir vilkėti'],
-      ctaUrl: 'https://baltasmiskas.lt/parduotuve/',
-      ctaLabel: 'Visi nauji gaminiai →'
+    silk: {
+      name: 'Šilkas',
+      tagline: '„Švelnus antros odos pojūtis“',
+      desc: 'Jūs vertinate rafinuotumą ir neprilygstamą švelnumą. Šilkas palaiko optimalią temperatūrą ir leidžia kūnui laisvai kvėpuoti. Tai audinys, skirtas ypatingoms akimirkoms ir tiems, kurie ieško subtilaus spindesio.',
+      traits: ['Termoreguliacinis', 'Hipolergiškas', 'Prabangus spindesys', 'Ypatingas švelnumas'],
+      ctaUrl: 'https://www.baltasmiskas.lt/paieska?q=silkas',
+      ctaLabel: 'Atrasti šilko kolekciją →'
     }
   };
 
   function choose(qIdx, fabric, btn) {
-    document.getElementById('q' + (qIdx+1))
-      .querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+    const parent = document.getElementById('q' + (qIdx+1));
+    parent.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
     btn.classList.add('selected');
     answers[qIdx] = fabric;
     const n = document.getElementById('btn-next');
@@ -520,67 +311,49 @@
 
   function goNext() {
     if (!answers[current]) return;
-    scores[answers[current]]++;
     current++;
     if (current >= TOTAL) showResult(); else showQuestion(current);
   }
 
   function goBack() {
     if (current === 0) return;
-    if (answers[current-1]) scores[answers[current-1]]--;
     current--;
     showQuestion(current);
   }
 
   function showQuestion(idx) {
     document.querySelectorAll('.question-block').forEach(b => b.classList.remove('active'));
-    const block = document.getElementById('q' + (idx+1));
-    block.classList.add('active');
-    if (answers[idx]) {
-      block.querySelectorAll('.option-btn').forEach(btn => {
-        if ((btn.getAttribute('onclick') || '').includes("'"+answers[idx]+"'"))
-          btn.classList.add('selected');
-      });
-    }
+    document.getElementById('q' + (idx+1)).classList.add('active');
+    
     const pct = Math.round((idx / TOTAL) * 100);
     document.getElementById('prog-fill').style.width = pct + '%';
     document.getElementById('prog-text').textContent = (idx+1) + ' / ' + TOTAL + ' klausimas';
     document.getElementById('prog-pct').textContent = pct + '%';
     document.getElementById('btn-back').disabled = idx === 0;
+    
     const n = document.getElementById('btn-next');
-    if (answers[idx]) {
-      n.classList.add('visible');
-      n.textContent = idx === TOTAL-1 ? 'Žiūrėti rezultatą →' : 'Toliau →';
-    } else {
-      n.classList.remove('visible');
-    }
+    if (answers[idx]) n.classList.add('visible'); else n.classList.remove('visible');
   }
 
   function showResult() {
-    const total = Object.values(scores).reduce((a,b) => a+b, 0);
-    const winner = Object.entries(scores).sort((a,b) => b[1]-a[1])[0][0];
+    let finalScores = { linen:0, cotton:0, ramie:0, silk:0 };
+    answers.forEach(a => finalScores[a]++);
+    const winner = Object.entries(finalScores).sort((a,b) => b[1]-a[1])[0][0];
     const f = FABRICS[winner];
+    
     document.getElementById('res-name').textContent = f.name;
     document.getElementById('res-tagline').textContent = f.tagline;
     document.getElementById('res-desc').textContent = f.desc;
     document.getElementById('res-cta').href = f.ctaUrl;
     document.getElementById('res-cta').textContent = f.ctaLabel;
-    document.getElementById('res-traits').innerHTML =
-      f.traits.map(t => `<span class="trait">${t}</span>`).join('');
+    document.getElementById('res-traits').innerHTML = f.traits.map(t => `<span class="trait">${t}</span>`).join('');
+    
     document.getElementById('progress-area').style.display = 'none';
     document.getElementById('quiz-body').style.display = 'none';
     document.getElementById('result-screen').classList.add('show');
-    setTimeout(() => {
-      ['linen','cotton','ramie','synth'].forEach(k => {
-        const p = total > 0 ? Math.round((scores[k]/total)*100) : 0;
-        document.getElementById('bar-'+k).style.width = p+'%';
-        document.getElementById('pct-'+k).textContent = p+'%';
-      });
-    }, 200);
   }
 
   function retake() {
-    scores = { linen:0, cotton:0, ramie:0, synth:0 };
     answers = new Array(TOTAL).fill(null);
     current = 0;
     document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
@@ -592,5 +365,14 @@
 
   showQuestion(0);
 </script>
+
+<script>
+    (function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[])
+    .push(arguments);},l=d.createElement(e),l.async=1,l.src=u,
+    n=d.getElementsByTagName(e)[0],n.parentNode.insertBefore(l,n);})
+    (window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');
+    ml('account', '1100412'); // Pasitikrinkite šį ID, jei forma neatsiranda
+</script>
+
 </body>
 </html>
