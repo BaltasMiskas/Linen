@@ -29,7 +29,7 @@
   .quiz-wrap { width: 100%; max-width: 600px; margin: 0 auto; }
 
   /* HEADER */
-  .quiz-eyebrow { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--bm-muted); margin-bottom: 1rem; }
+  .quiz-eyebrow { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--bm-accent); font-weight: 600; margin-bottom: 1rem; }
   .quiz-title { font-size: clamp(1.8rem, 5vw, 2.4rem); font-weight: 300; letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 1rem; }
   .quiz-sub { font-size: 0.95rem; font-weight: 300; color: var(--bm-muted); margin-bottom: 3rem; }
 
@@ -109,7 +109,7 @@
   <div id="quiz-header-area">
     <div class="quiz-eyebrow">Baltas Miškas · Audinio gidas</div>
     <h1 class="quiz-title">Koks audinys tinka jums?</h1>
-    <p class="quiz-sub">Atraskite savo idealų natūralų pluoštą per 6 trumpus klausimus.</p>
+    <p class="quiz-sub">Atraskite Jums geriausiai tinkantį natūralų pluoštą 6 trumpų klausimų pagalba.</p>
   </div>
 
   <div class="progress-area" id="progress-area">
@@ -140,22 +140,22 @@
     </div>
     <div class="question-block" id="q3">
         <div class="q-num">03</div>
-        <div class="q-text">Kokiam orui dažniausiai ieškote papildymo spintai?</div>
+        <div class="q-text">Kokiam orui renkatės drabužį?</div>
         <div class="options-list">
           <button class="option-btn" onclick="choose(2,'linen',this)">Karštai vasarai – oda turi laisvai kvėpuoti</button>
           <button class="option-btn" onclick="choose(2,'cotton',this)">Visiems sezonams – vertinu universalumą</button>
           <button class="option-btn" onclick="choose(2,'ramie',this)">Drėgnam klimatui – drėgmė turi greitai išgaruoti</button>
-          <button class="option-btn" onclick="choose(2,'silk',this)">Ieškau audinio, kuris vėsintų vasarą ir šildytų žiemą</button>
+          <button class="option-btn" onclick="choose(2,'silk',this)">Ieškau tokio, kuris vėsintų vasarą ir šildytų žiemą</button>
         </div>
     </div>
     <div class="question-block" id="q4">
         <div class="q-num">04</div>
         <div class="q-text">Kiek jums svarbi lėtoji mada ir tvarumas?</div>
         <div class="options-list">
-          <button class="option-btn" onclick="choose(3,'linen',this)">Tai prioritetas – renkuosi ekologiškus pluoštus</button>
-          <button class="option-btn" onclick="choose(3,'cotton',this)">Svarbu – renkuosi natūralią kokybę</button>
-          <button class="option-btn" onclick="choose(3,'ramie',this)">Labai svarbu – domiuosi inovatyvumu</button>
-          <button class="option-btn" onclick="choose(3,'silk',this)">Vertinu tai, kas tauri ir tarnauja metų metus</button>
+          <button class="option-btn" onclick="choose(3,'linen',this)">Tai prioritetas - renkuosi kuo ekologiškus pluoštus</button>
+          <button class="option-btn" onclick="choose(3,'cotton',this)">Svarbu, jei suderinama kokybe ir dėvėjimo patogumu</button>
+          <button class="option-btn" onclick="choose(3,'ramie',this)">Labai svarbu, ypač kai paselkiami inovatyvius reti audiniai</button>
+          <button class="option-btn" onclick="choose(3,'silk',this)">Vertinu ilgaamžiškus, madoms nepavaldžius audinius</button>
         </div>
     </div>
     <div class="question-block" id="q5">
@@ -172,10 +172,10 @@
         <div class="q-num">06</div>
         <div class="q-text">Drabužių priežiūra jums yra:</div>
         <div class="options-list">
-          <button class="option-btn" onclick="choose(5,'linen',this)">Mielas ritualas – tausoju natūralumą</button>
-          <button class="option-btn" onclick="choose(5,'cotton',this)">Paprastas procesas – skalbiu mašina</button>
-          <button class="option-btn" onclick="choose(5,'ramie',this)">Atsakingas darbas – geras audinys vertas laiko</button>
-          <button class="option-btn" onclick="choose(5,'silk',this)">Ypatingas dėmesys – saugau prabangų pluoštą</button>
+          <button class="option-btn" onclick="choose(5,'linen',this)">Mielas ritualas - tausoju natūralumą</button>
+          <button class="option-btn" onclick="choose(5,'cotton',this)">Paprastas procesas - skalbiu mašina</button>
+          <button class="option-btn" onclick="choose(5,'ramie',this)">Atsakingas darbas – geras audinys vertas laiko ir pastangų</button>
+          <button class="option-btn" onclick="choose(5,'silk',this)">Ypatingas dėmesys – preciziška priežiūra yra išskirtinio pluošto būtinybė</button>
         </div>
     </div>
 
@@ -203,8 +203,8 @@
     </div>
 
     <div class="bm-newsletter-section">
-      <h3>Naujienlaiškio prenumerata</h3>
-      <p>Informacija apie nuolaidas ir naujienas <strong>kiekvieną penktadienį.</strong></p>
+      <h3>Atraskite lietvišką madą</h3>
+      <p>Daugiau būdų atrasti kruopščiai atrenkamą <strong>lietuvuvišką madą.</strong></p>
       <div id="bm-form-view">
         <form id="bm-quiz-mailerlite" class="bm-form-row">
           <input id="bm-quiz-email" placeholder="Jūsų el. paštas" required type="email" />
