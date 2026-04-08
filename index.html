@@ -29,9 +29,17 @@
   .quiz-wrap { width: 100%; max-width: 600px; margin: 0 auto; }
 
   /* HEADER */
-  .quiz-eyebrow { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--bm-accent); font-weight: 600; margin-bottom: 1rem; }
-  .quiz-title { font-size: clamp(1.8rem, 5vw, 2.4rem); font-weight: 300; letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 1rem; }
-  .quiz-sub { font-size: 0.95rem; font-weight: 300; color: var(--bm-muted); margin-bottom: 3rem; }
+  .quiz-eyebrow { 
+    font-size: 0.7rem; 
+    text-transform: uppercase; 
+    letter-spacing: 0.2em; 
+    color: var(--bm-accent); 
+    font-weight: 600;
+    margin-bottom: 1rem; 
+  }
+  
+  .quiz-title { font-size: clamp(1.8rem, 5vw, 2.4rem); font-weight: 300; letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 1.5rem; }
+  .quiz-sub { font-size: 1rem; font-weight: 300; color: var(--bm-text); margin-bottom: 3rem; border-left: 2px solid var(--bm-accent); padding-left: 1.5rem; }
 
   /* PROGRESS */
   .progress-area { margin-bottom: 3rem; }
@@ -108,8 +116,11 @@
 <div class="quiz-wrap">
   <div id="quiz-header-area">
     <div class="quiz-eyebrow">Baltas Miškas · Audinio gidas</div>
-    <h1 class="quiz-title">Koks audinys tinka jums?</h1>
-    <p class="quiz-sub">Atraskite Jums geriausiai tinkantį natūralų pluoštą 6 trumpų klausimų pagalba.</p>
+    <h1 class="quiz-title">Koks vasariškas audinys geriausiai tinka Jums?</h1>
+    <div class="quiz-sub">
+        Susisteminome ir palyginome keleto populiarių natūralių audinių savybių.<br><br>
+        Atsakykite į šešis klausimus ir per mažiau nei 15 sekundžių atraskite, kas geriausiai tinka būtent Jums.
+    </div>
   </div>
 
   <div class="progress-area" id="progress-area">
@@ -128,56 +139,11 @@
         <button class="option-btn" onclick="choose(0,'silk',this)">Rafinuota prabanga ir ypatingas švelnumas odai</button>
       </div>
     </div>
-    <div class="question-block" id="q2">
-        <div class="q-num">02</div>
-        <div class="q-text">Kaip vertinate audinio tekstūrą ir glamžumą?</div>
-        <div class="options-list">
-          <button class="option-btn" onclick="choose(1,'linen',this)">Mėgstu natūralias raukšles – tai suteikia gyvumo</button>
-          <button class="option-btn" onclick="choose(1,'cotton',this)">Toleruoju, jei audinys lengvai išlyginamas</button>
-          <button class="option-btn" onclick="choose(1,'ramie',this)">Renkuosi standesnį, savo formą laikantį audinį</button>
-          <button class="option-btn" onclick="choose(1,'silk',this)">Ieškau lygaus, krentančio ir žvilgančio paviršiaus</button>
-        </div>
-    </div>
-    <div class="question-block" id="q3">
-        <div class="q-num">03</div>
-        <div class="q-text">Kokiam orui renkatės drabužį?</div>
-        <div class="options-list">
-          <button class="option-btn" onclick="choose(2,'linen',this)">Karštai vasarai – oda turi laisvai kvėpuoti</button>
-          <button class="option-btn" onclick="choose(2,'cotton',this)">Visiems sezonams – vertinu universalumą</button>
-          <button class="option-btn" onclick="choose(2,'ramie',this)">Drėgnam klimatui – drėgmė turi greitai išgaruoti</button>
-          <button class="option-btn" onclick="choose(2,'silk',this)">Ieškau tokio, kuris vėsintų vasarą ir šildytų žiemą</button>
-        </div>
-    </div>
-    <div class="question-block" id="q4">
-        <div class="q-num">04</div>
-        <div class="q-text">Kiek jums svarbi lėtoji mada ir tvarumas?</div>
-        <div class="options-list">
-          <button class="option-btn" onclick="choose(3,'linen',this)">Tai prioritetas - renkuosi kuo ekologiškus pluoštus</button>
-          <button class="option-btn" onclick="choose(3,'cotton',this)">Svarbu, jei suderinama kokybe ir dėvėjimo patogumu</button>
-          <button class="option-btn" onclick="choose(3,'ramie',this)">Labai svarbu, ypač kai paselkiami inovatyvius reti audiniai</button>
-          <button class="option-btn" onclick="choose(3,'silk',this)">Vertinu ilgaamžiškus, madoms nepavaldžius audinius</button>
-        </div>
-    </div>
-    <div class="question-block" id="q5">
-        <div class="q-num">05</div>
-        <div class="q-text">Kuris stiliaus apibūdinimas jums artimiausias?</div>
-        <div class="options-list">
-          <button class="option-btn" onclick="choose(4,'linen',this)">Laisvas, autentiškas ir bohemiškas</button>
-          <button class="option-btn" onclick="choose(4,'cotton',this)">Jaukus, kasdienis ir patikimas</button>
-          <button class="option-btn" onclick="choose(4,'ramie',this)">Minimalistinis, struktūriškas ir prabangus</button>
-          <button class="option-btn" onclick="choose(4,'silk',this)">Rafinuotas, moteriškas ir elegantiškas</button>
-        </div>
-    </div>
-    <div class="question-block" id="q6">
-        <div class="q-num">06</div>
-        <div class="q-text">Drabužių priežiūra jums yra:</div>
-        <div class="options-list">
-          <button class="option-btn" onclick="choose(5,'linen',this)">Mielas ritualas - tausoju natūralumą</button>
-          <button class="option-btn" onclick="choose(5,'cotton',this)">Paprastas procesas - skalbiu mašina</button>
-          <button class="option-btn" onclick="choose(5,'ramie',this)">Atsakingas darbas – geras audinys vertas laiko ir pastangų</button>
-          <button class="option-btn" onclick="choose(5,'silk',this)">Ypatingas dėmesys – preciziška priežiūra yra išskirtinio pluošto būtinybė</button>
-        </div>
-    </div>
+    <div class="question-block" id="q2"><div class="q-num">02</div><div class="q-text">Kaip vertinate audinio tekstūrą ir glamžumą?</div><div class="options-list"><button class="option-btn" onclick="choose(1,'linen',this)">Mėgstu natūralias raukšles – tai suteikia gyvumo</button><button class="option-btn" onclick="choose(1,'cotton',this)">Toleruoju, jei audinys lengvai išlyginamas</button><button class="option-btn" onclick="choose(1,'ramie',this)">Renkuosi standesnį, savo formą laikantį audinį</button><button class="option-btn" onclick="choose(1,'silk',this)">Ieškau lygaus, krentančio ir žvilgančio paviršiaus</button></div></div>
+    <div class="question-block" id="q3"><div class="q-num">03</div><div class="q-text">Kokiam orui dažniausiai ieškote papildymo spintai?</div><div class="options-list"><button class="option-btn" onclick="choose(2,'linen',this)">Karštai vasarai – oda turi laisvai kvėpuoti</button><button class="option-btn" onclick="choose(2,'cotton',this)">Visiems sezonams – vertinu universalumą</button><button class="option-btn" onclick="choose(2,'ramie',this)">Drėgnam klimatui – drėgmė turi greitai išgaruoti</button><button class="option-btn" onclick="choose(2,'silk',this)">Ieškau audinio, kuris vėsintų vasarą ir šildytų žiemą</button></div></div>
+    <div class="question-block" id="q4"><div class="q-num">04</div><div class="q-text">Kiek jums svarbi lėtoji mada ir tvarumas?</div><div class="options-list"><button class="option-btn" onclick="choose(3,'linen',this)">Tai prioritetas – renkuosi ekologiškus pluoštus</button><button class="option-btn" onclick="choose(3,'cotton',this)">Svarbu – renkuosi natūralią kokybę</button><button class="option-btn" onclick="choose(3,'ramie',this)">Labai svarbu – domiuosi inovatyvumu</button><button class="option-btn" onclick="choose(3,'silk',this)">Vertinu tai, kas tauri ir tarnauja metų metus</button></div></div>
+    <div class="question-block" id="q5"><div class="q-num">05</div><div class="q-text">Kuris stiliaus apibūdinimas jums artimiausias?</div><div class="options-list"><button class="option-btn" onclick="choose(4,'linen',this)">Laisvas, autentiškas ir bohemiškas</button><button class="option-btn" onclick="choose(4,'cotton',this)">Jaukus, kasdienis ir patikimas</button><button class="option-btn" onclick="choose(4,'ramie',this)">Minimalistinis, struktūriškas ir prabangus</button><button class="option-btn" onclick="choose(4,'silk',this)">Rafinuotas, moteriškas ir elegantiškas</button></div></div>
+    <div class="question-block" id="q6"><div class="q-num">06</div><div class="q-text">Drabužių priežiūra jums yra:</div><div class="options-list"><button class="option-btn" onclick="choose(5,'linen',this)">Mielas ritualas – tausoju natūralumą</button><button class="option-btn" onclick="choose(5,'cotton',this)">Paprastas procesas – skalbiu mašina</button><button class="option-btn" onclick="choose(5,'ramie',this)">Atsakingas darbas – geras audinys vertas laiko</button><button class="option-btn" onclick="choose(5,'silk',this)">Ypatingas dėmesys – saugau prabangų pluoštą</button></div></div>
 
     <div class="quiz-nav">
       <button class="btn-back" id="btn-back" onclick="goBack()" disabled>← Atgal</button>
@@ -203,8 +169,8 @@
     </div>
 
     <div class="bm-newsletter-section">
-      <h3>Atraskite lietvišką madą</h3>
-      <p>Daugiau būdų atrasti kruopščiai atrenkamą <strong>lietuvuvišką madą.</strong></p>
+      <h3>Naujienlaiškio prenumerata</h3>
+      <p>Informacija apie nuolaidas ir naujienas <strong>kiekvieną penktadienį.</strong></p>
       <div id="bm-form-view">
         <form id="bm-quiz-mailerlite" class="bm-form-row">
           <input id="bm-quiz-email" placeholder="Jūsų el. paštas" required type="email" />
@@ -224,34 +190,10 @@
   let answers = new Array(TOTAL).fill(null);
 
   const FABRICS = {
-    linen: { 
-        name: 'Linas', 
-        tagline: '„Lėtesnio gyvenimo filosofija“', 
-        desc: 'Jus traukia autentiškas, neįpareigojantis grožis. Linas po kiekvieno skalbimo tampa vis minkštesnis, o jo raukšlės pasakoja apie laisvę.', 
-        traits: ['Kvėpuojantis', 'Tvarus', 'Antibakterinis'], 
-        url: 'https://www.baltasmiskas.lt/paieska?q=linas' 
-    },
-    cotton: { 
-        name: 'Medvilnė', 
-        tagline: '„Patogumas ir kasdienė laisvė“', 
-        desc: 'Jums svarbiausia – komfortas. Medvilnė yra minkšta, puikiai sugeria drėgmę ir leidžia odai jaustis gaiviai.', 
-        traits: ['Minkšta', 'Hipoalergiška', 'Universali'], 
-        url: 'https://www.baltasmiskas.lt/paieska?q=medvilne' 
-    },
-    ramie: { 
-        name: 'Ramė', 
-        tagline: '„Struktūra ir taurus atsparumas“', 
-        desc: 'Jus domina audiniai su charakteriu. Ramė pasižymi prabangiu spindesiu ir neįtikėtinu tvirtumu. Tai pasirinkimas ieškantiems unikalumo.', 
-        traits: ['Ypač tvirtas', 'Prabangus spindesys', 'Tvarus'], 
-        url: 'https://www.baltasmiskas.lt/paieska?q=romy' 
-    },
-    silk: { 
-        name: 'Šilkas', 
-        tagline: '„Švelnus antros odos pojūtis“', 
-        desc: 'Jūs vertinate rafinuotumą ir neprilygstamą švelnumą. Šilkas palaiko optimalią temperatūrą ir leidžia kūnui laisvai kvėpuoti.', 
-        traits: ['Termoreguliacinis', 'Švelnumas', 'Prabanga'], 
-        url: 'https://www.baltasmiskas.lt/paieska?q=silkas' 
-    }
+    linen: { name: 'Linas', tagline: '„Lėtesnio gyvenimo filosofija“', desc: 'Jus traukia autentiškas, neįpareigojantis grožis. Linas po kiekvieno skalbimo tampa vis minkštesnis, o jo raukšlės pasakoja apie laisvę.', traits: ['Kvėpuojantis', 'Tvarus', 'Antibakterinis'], url: 'https://www.baltasmiskas.lt/paieska?q=linas' },
+    cotton: { name: 'Medvilnė', tagline: '„Švelnumas ir kasdienė laisvė“', desc: 'Jums svarbiausia – komfortas. Medvilnė yra minkšta, puikiai sugeria drėgmę ir leidžia odai jaustis gaiviai.', traits: ['Minkšta', 'Hipoalergiška', 'Universali'], url: 'https://www.baltasmiskas.lt/paieska?q=medvilne' },
+    ramie: { name: 'Ramė', tagline: '„Struktūra ir taurus atsparumas“', desc: 'Jus domina audiniai su charakteriu. Ramė pasižymi prabangiu spindesiu ir neįtikėtinu tvirtumu.', traits: ['Ypač tvirtas', 'Prabangus spindesys', 'Tvarus'], url: 'https://www.baltasmiskas.lt/paieska?q=romy' },
+    silk: { name: 'Šilkas', tagline: '„Švelnus antros odos pojūtis“', desc: 'Jūs vertinate rafinuotumą ir neprilygstamą švelnumą. Šilkas palaiko optimalią temperatūrą ir leidžia kūnui laisvai kvėpuoti.', traits: ['Termoreguliacinis', 'Švelnumas', 'Prabanga'], url: 'https://www.baltasmiskas.lt/paieska?q=silkas' }
   };
 
   const LABELS = { linen: 'Linas', cotton: 'Medvilnė', ramie: 'Ramė', silk: 'Šilkas' };
@@ -266,17 +208,8 @@
     n.textContent = qIdx === TOTAL-1 ? 'Žiūrėti rezultatą →' : 'Toliau →';
   }
 
-  function goNext() {
-    if (!answers[current]) return;
-    current++;
-    if (current >= TOTAL) showResult(); else showQuestion(current);
-  }
-
-  function goBack() {
-    if (current === 0) return;
-    current--;
-    showQuestion(current);
-  }
+  function goNext() { if (!answers[current]) return; current++; if (current >= TOTAL) showResult(); else showQuestion(current); }
+  function goBack() { if (current === 0) return; current--; showQuestion(current); }
 
   function showQuestion(idx) {
     document.querySelectorAll('.question-block').forEach(b => b.classList.remove('active'));
@@ -293,35 +226,25 @@
   function showResult() {
     let finalScores = { linen:0, cotton:0, ramie:0, silk:0 };
     answers.forEach(a => finalScores[a]++);
-    
-    // Surandame laimėtoją
     const winnerKey = Object.entries(finalScores).sort((a,b) => b[1]-a[1])[0][0];
     const data = FABRICS[winnerKey];
     
-    // Užpildome duomenis
     document.getElementById('res-name').textContent = data.name;
     document.getElementById('res-tagline').textContent = data.tagline;
     document.getElementById('res-desc').textContent = data.desc;
     document.getElementById('res-traits').innerHTML = data.traits.map(t => `<span class="trait">${t}</span>`).join('');
     
-    // SVARBU: Atnaujiname nuorodą į baltasmiskas.lt
     const cta = document.getElementById('res-cta');
     cta.href = data.url;
     cta.textContent = `Atrasti ${data.name.toLowerCase()} kolekciją →`;
 
-    // Procentų vizualizacija
     let breakdownHtml = '';
     Object.entries(finalScores).forEach(([key, val]) => {
         const percentage = Math.round((val / TOTAL) * 100);
-        breakdownHtml += `
-            <div class="breakdown-item">
-                <div class="breakdown-label"><span>${LABELS[key]}</span><span>${percentage}%</span></div>
-                <div class="breakdown-bar-bg"><div class="breakdown-bar-fill" style="width: ${percentage}%"></div></div>
-            </div>`;
+        breakdownHtml += `<div class="breakdown-item"><div class="breakdown-label"><span>${LABELS[key]}</span><span>${percentage}%</span></div><div class="breakdown-bar-bg"><div class="breakdown-bar-fill" style="width: ${percentage}%"></div></div></div>`;
     });
     document.getElementById('res-breakdown').innerHTML = breakdownHtml;
 
-    // Perjungiame ekranus
     document.getElementById('quiz-header-area').style.display = 'none';
     document.getElementById('progress-area').style.display = 'none';
     document.getElementById('quiz-body').style.display = 'none';
@@ -340,13 +263,11 @@
     showQuestion(0);
   }
 
-  // MAILERLITE INTEGRACIJA
   document.getElementById('bm-quiz-mailerlite').addEventListener('submit', function(e) {
     e.preventDefault();
     const email = document.getElementById('bm-quiz-email').value;
     document.getElementById('bm-form-view').style.display = 'none';
     document.getElementById('bm-success-view').style.display = 'block';
-
     const url = 'https://assets.mailerlite.com/jsonp/1100412/forms/179555461223154701/subscribe?fields[email]=' + encodeURIComponent(email) + '&ml-submit=1&anticsrf=true';
     const script = document.createElement('script');
     script.src = url;
