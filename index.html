@@ -188,12 +188,13 @@
   const TOTAL = 6;
   let current = 0;
   let answers = new Array(TOTAL).fill(null);
+  const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbxoF01i4MpzkdL2nW_u0BRBvMqQKErRQ0pvOhxpbuSz8aFPyPojH2QxgdlHRfvXnNs83w/exec';
 
   const FABRICS = {
-    linen: { name: 'Linas', tagline: '„Lėtesnio gyvenimo filosofija“', desc: 'Jus traukia autentiškas, neįpareigojantis grožis. Linas po kiekvieno skalbimo tampa vis minkštesnis, o jo raukšlės pasakoja apie laisvę.', traits: ['Kvėpuojantis', 'Tvarus', 'Antibakterinis'], url: 'https://www.baltasmiskas.lt/paieska?q=linas' },
-    cotton: { name: 'Medvilnė', tagline: '„Švelnumas ir kasdienė laisvė“', desc: 'Jums svarbiausia – komfortas. Medvilnė yra minkšta, puikiai sugeria drėgmę ir leidžia odai jaustis gaiviai.', traits: ['Minkšta', 'Hipoalergiška', 'Universali'], url: 'https://www.baltasmiskas.lt/paieska?q=medvilne' },
+    linen: { name: 'Linas', tagline: '„Lėtesnio gyvenimo filosofija“', desc: 'Jus traukia autentiškas, neįpareigojantis grožis. Linas po kiekvieno skalbimo tampa vis minkštesnis.', traits: ['Kvėpuojantis', 'Tvarus', 'Antibakterinis'], url: 'https://www.baltasmiskas.lt/paieska?q=linas' },
+    cotton: { name: 'Medvilnė', tagline: '„Švelnumas ir kasdienė laisvė“', desc: 'Jums svarbiausia – komfortas. Medvilnė yra minkšta ir leidžia odai jaustis gaiviai.', traits: ['Minkšta', 'Hipoalergiška', 'Universali'], url: 'https://www.baltasmiskas.lt/paieska?q=medvilne' },
     ramie: { name: 'Ramė', tagline: '„Struktūra ir taurus atsparumas“', desc: 'Jus domina audiniai su charakteriu. Ramė pasižymi prabangiu spindesiu ir neįtikėtinu tvirtumu.', traits: ['Ypač tvirtas', 'Prabangus spindesys', 'Tvarus'], url: 'https://www.baltasmiskas.lt/paieska?q=romy' },
-    silk: { name: 'Šilkas', tagline: '„Švelnus antros odos pojūtis“', desc: 'Jūs vertinate rafinuotumą ir neprilygstamą švelnumą. Šilkas palaiko optimalią temperatūrą ir leidžia kūnui laisvai kvėpuoti.', traits: ['Termoreguliacinis', 'Švelnumas', 'Prabanga'], url: 'https://www.baltasmiskas.lt/paieska?q=silkas' }
+    silk: { name: 'Šilkas', tagline: '„Švelnus antros odos pojūtis“', desc: 'Jūs vertinate rafinuotumą ir neprilygstamą švelnumą. Šilkas palaiko optimalią temperatūrą.', traits: ['Termoreguliacinis', 'Švelnumas', 'Prabanga'], url: 'https://www.baltasmiskas.lt/paieska?q=silkas' }
   };
 
   const LABELS = { linen: 'Linas', cotton: 'Medvilnė', ramie: 'Ramė', silk: 'Šilkas' };
@@ -228,7 +229,20 @@
     answers.forEach(a => finalScores[a]++);
     const winnerKey = Object.entries(finalScores).sort((a,b) => b[1]-a[1])[0][0];
     const data = FABRICS[winnerKey];
+
+    // SIUNTIMAS Į GOOGLE SHEETS
+    fetch(GOOGLE_SHEET_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      cache: 'no-cache',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        winner: data.name,
+        answers: answers
+      })
+    }).catch(err => console.log('Google Sheets klaida:', err));
     
+    // REZULTATŲ PILDYMAS EKRANE
     document.getElementById('res-name').textContent = data.name;
     document.getElementById('res-tagline').textContent = data.tagline;
     document.getElementById('res-desc').textContent = data.desc;
