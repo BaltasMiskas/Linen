@@ -1,67 +1,190 @@
 <!DOCTYPE html>
 <html lang="lt">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Audinio gidas – Baltas Miškas</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
-<style>
-  /* PAGRINDINIAI STILIAI */
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  :root { --bm-accent: #a16207; --bm-text: #1a1a1a; --bm-muted: #888888; --bm-border: #f0f0f0; --bm-soft-bg: #fef9ee; }
-  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #ffffff; color: var(--bm-text); line-height: 1.8; padding: 2rem 1rem; -webkit-font-smoothing: antialiased; }
-  .quiz-wrap { width: 100%; max-width: 600px; margin: 0 auto; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audinio gidas</title>
+    <style>
+        /* PAGRINDINIAI STILIAI */
+        body { font-family: -apple-system, system-ui, sans-serif; color: #1a1a1a; line-height: 1.6; padding: 20px; background: #fff; margin: 0; }
+        :root { --accent: #a16207; --border: #f0f0f0; }
+        
+        .quiz-title { font-size: 1.8rem; font-weight: 300; margin-bottom: 10px; color: #1a1a1a; }
+        .quiz-sub { font-size: 0.95rem; color: #666; margin-bottom: 30px; border-left: 2px solid var(--accent); padding-left: 15px; }
+        
+        /* KLAUSIMAI */
+        .q-block { display: none; }
+        .q-block.active { display: block; }
+        
+        .opt-list { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+        .opt-btn { 
+            background: none; border: 1px solid var(--border); padding: 15px; text-align: left; 
+            cursor: pointer; font-size: 14px; 
+            color: #1a1a1a !important; /* Priverstinai pilka/juoda mobiliesiems */
+            text-decoration: none !important;
+            transition: 0.2s;
+        }
+        .opt-btn:hover, .opt-btn.selected { border-color: var(--accent); color: var(--accent) !important; background: #fef9ee; }
+        
+        /* PROGRESAS */
+        .prog-bar { height: 1px; background: var(--border); margin-bottom: 30px; width: 100%; }
+        .prog-fill { height: 100%; background: var(--accent); transition: width 0.3s; width: 0%; }
+        
+        .nav { display: flex; justify-content: space-between; margin-top: 30px; align-items: center; }
+        .btn-n { background: var(--accent); color: #fff; border: none; padding: 12px 24px; cursor: pointer; visibility: hidden; text-transform: uppercase; font-size: 11px; font-weight: 600; }
+        
+        /* REZULTATAI */
+        #res { display: none; }
+        .res-name { font-size: 2.2rem; font-weight: 300; color: var(--accent); margin-bottom: 10px; }
+        
+        /* NAUJIENLAIŠKIS */
+        .newsletter { margin-top: 40px; padding-top: 30px; border-top: 1px solid var(--border); text-align: center; }
+        .nl-input { width: 100%; padding: 12px; border: 1px solid var(--accent); margin-bottom: 10px; outline: none; }
+        .nl-btn { width: 100%; background: var(--accent); color: #fff; border: none; padding: 12px; cursor: pointer; font-weight: 600; text-transform: uppercase; font-size: 11px; }
+    </style>
+</head>
+<body>
 
-  /* HEADER */
-  .quiz-eyebrow { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--bm-accent); font-weight: 600; margin-bottom: 1rem; }
-  .quiz-title { font-size: clamp(1.6rem, 5vw, 2.2rem); font-weight: 300; letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 1.5rem; }
-  .quiz-sub { font-size: 0.95rem; font-weight: 300; color: var(--bm-text); margin-bottom: 2.5rem; border-left: 2px solid var(--bm-accent); padding-left: 1.2rem; }
+<div id="game">
+    <div class="quiz-title">Koks vasariškas audinys tinka Jums?</div>
+    <div class="quiz-sub">Atsakykite į 6 klausimus ir sužinokite.</div>
+    <div class="prog-bar"><div class="prog-fill" id="fill"></div></div>
 
-  /* PROGRESS */
-  .progress-area { margin-bottom: 2.5rem; }
-  .progress-meta { display: flex; justify-content: space-between; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: #ccc; margin-bottom: 8px; }
-  .progress-track { height: 1px; background: var(--bm-border); }
-  .progress-fill { height: 100%; background: var(--bm-accent); transition: width 0.4s ease; }
+    <div id="qs">
+        <div class="q-block active" id="q0">
+            <p><b>01. Kas Jums svarbiausia renkantis drabužį?</b></p>
+            <div class="opt-list">
+                <button class="opt-btn" onclick="sel(0,'Linas',this)">Natūralumas ir elegancija</button>
+                <button class="opt-btn" onclick="sel(0,'Medvilnė',this)">Minkštumas ir patogumas</button>
+                <button class="opt-btn" onclick="sel(0,'Ramė',this)">Tvirtumas ir struktūra</button>
+                <button class="opt-btn" onclick="sel(0,'Šilkas',this)">Prabanga ir švelnumas</button>
+            </div>
+        </div>
+        <div class="q-block" id="q1">
+            <p><b>02. Kaip vertinate audinio glamžumą?</b></p>
+            <div class="opt-list">
+                <button class="opt-btn" onclick="sel(1,'Linas',this)">Mėgstu natūralias raukšles</button>
+                <button class="opt-btn" onclick="sel(1,'Medvilnė',this)">Svarbu, kad lengvai lygintųsi</button>
+                <button class="opt-btn" onclick="sel(1,'Ramė',this)">Mėgstu standesnį audinį</button>
+                <button class="opt-btn" onclick="sel(1,'Šilkas',this)">Noriu lygaus žvilgesio</button>
+            </div>
+        </div>
+        <div class="q-block" id="q2">
+            <p><b>03. Kokiam orui ieškote drabužio?</b></p>
+            <div class="opt-list">
+                <button class="opt-btn" onclick="sel(2,'Linas',this)">Dideliems karščiams</button>
+                <button class="opt-btn" onclick="sel(2,'Medvilnė',this)">Kasdienai bet kokiu oru</button>
+                <button class="opt-btn" onclick="sel(2,'Ramie',this)">Drėgnam orui</button>
+                <button class="opt-btn" onclick="sel(2,'Šilkas',this)">Vėsiam vakarui</button>
+            </div>
+        </div>
+        <div class="q-block" id="q3">
+            <p><b>04. Ar Jums svarbus audinio tvarumas?</b></p>
+            <div class="opt-list">
+                <button class="opt-btn" onclick="sel(3,'Linas',this)">Taip, tai prioritetas</button>
+                <button class="opt-btn" onclick="sel(3,'Medvilnė',this)">Svarbu natūralumas</button>
+                <button class="opt-btn" onclick="sel(3,'Ramie',this)">Domina inovacijos</button>
+                <button class="opt-btn" onclick="sel(3,'Šilkas',this)">Vertinu ilgaamžiškumą</button>
+            </div>
+        </div>
+        <div class="q-block" id="q4">
+            <p><b>05. Jūsų stilius yra:</b></p>
+            <div class="opt-list">
+                <button class="opt-btn" onclick="sel(4,'Linas',this)">Laisvas ir bohemiškas</button>
+                <button class="opt-btn" onclick="sel(4,'Medvilnė',this)">Jaukus ir paprastas</button>
+                <button class="opt-btn" onclick="sel(4,'Ramie',this)">Minimalistinis</button>
+                <button class="opt-btn" onclick="sel(4,'Šilkas',this)">Elegantiškas</button>
+            </div>
+        </div>
+        <div class="q-block" id="q5">
+            <p><b>06. Priežiūra Jums yra:</b></p>
+            <div class="opt-list">
+                <button class="opt-btn" onclick="sel(5,'Linas',this)">Natūralus ritualas</button>
+                <button class="opt-btn" onclick="sel(5,'Medvilnė',this)">Greitas skalbimas</button>
+                <button class="opt-btn" onclick="sel(5,'Ramie',this)">Atsakingas darbas</button>
+                <button class="opt-btn" onclick="sel(5,'Šilkas',this)">Saugau prabangą</button>
+            </div>
+        </div>
+    </div>
 
-  /* KLAUSIMAI */
-  .question-block { display: none; animation: fadeIn 0.4s ease forwards; }
-  .question-block.active { display: block; }
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-  .q-num { font-size: 11px; color: #ccc; margin-bottom: 10px; }
-  .q-text { font-size: 1.15rem; font-weight: 400; margin-bottom: 1.8rem; line-height: 1.4; }
+    <div class="nav">
+        <button style="background:none; border:none; color:#ccc; cursor:pointer; font-size:11px; text-transform:uppercase;" onclick="prev()">Atgal</button>
+        <button class="btn-n" id="nxt" onclick="next()">Toliau</button>
+    </div>
+</div>
 
-  /* PASIRINKIMAI - FIKSUOTA SPALVA MOBILIESIEMS */
-  .options-list { display: flex; flex-direction: column; gap: 10px; }
-  .option-btn {
-    background: none; border: 1px solid var(--bm-border); padding: 1.1rem;
-    text-align: left; cursor: pointer; font-size: 14px; font-family: inherit; transition: all 0.2s;
-    color: var(--bm-text) !important; text-decoration: none !important;
-  }
-  .option-btn:hover { border-color: var(--bm-accent); color: var(--bm-accent) !important; }
-  .option-btn.selected { border-color: var(--bm-accent); background: var(--bm-soft-bg); color: var(--bm-accent) !important; }
+<div id="res">
+    <div class="res-name" id="rn"></div>
+    <p id="rd"></p>
+    <br>
+    <a href="https://www.baltasmiskas.lt" target="_top" style="display:inline-block; background:var(--accent); color:#fff; padding:15px 25px; text-decoration:none; font-size:12px; font-weight:600; letter-spacing:1px;">ATRASKITE KOLEKCIJĄ</a>
+    
+    <div class="newsletter">
+        <p style="font-size: 14px; margin-bottom: 15px;">Norite gauti stiliaus patarimų į paštą?</p>
+        <form id="nl-form">
+            <input type="email" id="nl-email" class="nl-input" placeholder="Jūsų el. paštas" required>
+            <button type="submit" class="nl-btn">Prenumeruoti</button>
+        </form>
+        <p id="nl-msg" style="display:none; color: var(--accent); font-size: 13px; margin-top: 10px;">Ačiū! Sėkmingai užsiprenumeravote.</p>
+    </div>
+</div>
 
-  /* REZULTATAI */
-  #result-screen { display: none; }
-  #result-screen.show { display: block; }
-  .res-name { font-size: clamp(2rem, 6vw, 2.8rem); font-weight: 300; margin-bottom: 0.5rem; letter-spacing: -0.01em; }
-  .res-tagline { font-size: 1rem; font-style: italic; color: var(--bm-muted); margin-bottom: 1.5rem; }
-  .res-desc { font-size: 1rem; font-weight: 300; margin-bottom: 2rem; color: #444; }
+<script>
+    var cur = 0, ans = [];
+    // ĮRAŠYKITE SAVO GOOGLE SCRIPT URL ČIA (tą, kurį gavote po "Deploy"):
+    var sheet_url = 'https://script.google.com/macros/s/AKfycbxoF01i4MpzkdL2nW_u0BRBvMqQKErRQ0pvOhxpbuSz8aFPyPojH2QxgdlHRfvXnNs83w/exec';
 
-  /* GRAFIKAI */
-  .breakdown-title { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 1.2rem; }
-  .breakdown-item { margin-bottom: 0.8rem; }
-  .breakdown-label { display: flex; justify-content: space-between; font-size: 11px; color: var(--bm-muted); margin-bottom: 4px; }
-  .breakdown-bar-bg { height: 2px; background: var(--bm-border); width: 100%; }
-  .breakdown-bar-fill { height: 100%; background: var(--bm-accent); transition: width 1s ease; }
+    function sel(idx, val, btn) {
+        ans[idx] = val;
+        var opts = btn.parentElement.querySelectorAll('.opt-btn');
+        opts.forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        document.getElementById('nxt').style.visibility = 'visible';
+    }
 
-  /* NAV */
-  .quiz-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 2rem; }
-  .btn-back { background: none; border: none; font-size: 11px; text-transform: uppercase; color: #ccc; cursor: pointer; }
-  .btn-next { background: var(--bm-accent); color: #fff; border: none; padding: 10px 24px; cursor: pointer; text-transform: uppercase; font-size: 11px; font-weight: 600; opacity: 0; pointer-events: none; }
-  .btn-next.visible { opacity: 1; pointer-events: all; }
+    function next() {
+        if (cur < 5) { cur++; showQ(); } else { finish(); }
+    }
 
-  /* CTA */
-  .res-actions { display: flex; gap: 1rem; margin-top: 2.5rem; }
+    function prev() { if (cur > 0) { cur--; showQ(); } }
+
+    function showQ() {
+        document.querySelectorAll('.q-block').forEach((b, i) => b.classList.toggle('active', i == cur));
+        document.getElementById('fill').style.width = ((cur+1) / 6 * 100) + '%';
+        document.getElementById('nxt').style.visibility = ans[cur] ? 'visible' : 'hidden';
+        window.scrollTo(0,0);
+    }
+
+    function finish() {
+        var counts = {};
+        ans.forEach(a => counts[a] = (counts[a] || 0) + 1);
+        var win = Object.entries(counts).sort((a,b) => b[1]-a[1])[0][0];
+        
+        // Siunčiame duomenis į Google Sheets
+        fetch(sheet_url + "?winner=" + encodeURIComponent(win) + "&answers=" + encodeURIComponent(ans.join(", ")), { mode: 'no-cors' });
+
+        document.getElementById('game').style.display = 'none';
+        document.getElementById('res').style.display = 'block';
+        document.getElementById('rn').innerText = win;
+        document.getElementById('rd').innerText = "Puikus pasirinkimas! Šis audinis geriausiai atitinka Jūsų poreikius ir gyvenimo būdą.";
+        window.scrollTo(0,0);
+    }
+
+    // MailerLite prenumerata
+    document.getElementById('nl-form').onsubmit = function(e) {
+        e.preventDefault();
+        var email = document.getElementById('nl-email').value;
+        var url = 'https://assets.mailerlite.com/jsonp/1100412/forms/179555461223154701/subscribe?fields[email]=' + encodeURIComponent(email) + '&ml-submit=1';
+        var script = document.createElement('script');
+        script.src = url;
+        document.body.appendChild(script);
+        document.getElementById('nl-form').style.display = 'none';
+        document.getElementById('nl-msg').style.display = 'block';
+    };
+</script>
+
+</body>
+</html>  .res-actions { display: flex; gap: 1rem; margin-top: 2.5rem; }
   .btn-cta { background: var(--bm-accent); color: #fff; padding: 1rem 1.5rem; text-decoration: none; font-size: 0.75rem; text-transform: uppercase; font-weight: 600; display: inline-flex; align-items: center; }
   .btn-retake { background: none; border: 1px solid var(--bm-border); padding: 1rem; cursor: pointer; font-size: 0.7rem; text-transform: uppercase; color: var(--bm-muted); }
 
