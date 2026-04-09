@@ -1,111 +1,325 @@
 <!DOCTYPE html>
 <html lang="lt">
 <head>
-<meta charset="UTF-8">
-<style>
-  body { font-family: sans-serif; color: #1a1a1a; line-height: 1.6; padding: 20px; max-width: 600px; margin: 0 auto; }
-  :root { --accent: #a16207; --border: #f0f0f0; }
-  .quiz-title { font-size: 1.8rem; font-weight: 300; margin-bottom: 10px; }
-  .quiz-sub { font-size: 1rem; color: #666; margin-bottom: 30px; border-left: 2px solid var(--accent); padding-left: 15px; }
-  .q-block { display: none; }
-  .q-block.active { display: block; animation: fadeIn 0.3s; }
-  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-  .opt-list { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
-  .opt-btn { 
-    background: none; border: 1px solid var(--border); padding: 15px; text-align: left; 
-    cursor: pointer; font-size: 14px; color: #1a1a1a !important; text-decoration: none !important;
-  }
-  .opt-btn:hover, .opt-btn.selected { border-color: var(--accent); color: var(--accent) !important; background: #fef9ee; }
-  .prog-bar { height: 2px; background: var(--border); margin-bottom: 30px; width: 100%; }
-  .prog-fill { height: 100%; background: var(--accent); transition: width 0.3s; width: 0%; }
-  .nav { display: flex; justify-content: space-between; margin-top: 30px; }
-  .btn-n { background: var(--accent); color: #fff; border: none; padding: 10px 20px; cursor: pointer; visibility: hidden; text-transform: uppercase; font-size: 12px; }
-  #res { display: none; text-align: left; }
-  .res-name { font-size: 2rem; color: var(--accent); margin-bottom: 10px; }
-  .bar-bg { background: #eee; height: 4px; width: 100%; margin: 5px 0 15px; }
-  .bar-fill { background: var(--accent); height: 100%; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audinio gidas – Baltas Miškas</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+    <style>
+        /* PAGRINDINIAI STILIAI */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bm-accent: #a16207;
+            --bm-text: #1a1a1a;
+            --bm-muted: #888888;
+            --bm-border: #f0f0f0;
+            --bm-soft-bg: #fef9ee;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: #ffffff;
+            color: var(--bm-text);
+            line-height: 1.8;
+            padding: 2rem 1.5rem;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .quiz-wrap { width: 100%; max-width: 600px; margin: 0 auto; }
+
+        /* HEADER */
+        .quiz-eyebrow { 
+            font-size: 0.7rem; 
+            text-transform: uppercase; 
+            letter-spacing: 0.2em; 
+            color: var(--bm-accent); 
+            font-weight: 600;
+            margin-bottom: 1rem; 
+        }
+        
+        .quiz-title { font-size: clamp(1.8rem, 5vw, 2.4rem); font-weight: 300; letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 1.5rem; }
+        .quiz-sub { font-size: 1rem; font-weight: 300; color: var(--bm-text); margin-bottom: 3rem; border-left: 2px solid var(--bm-accent); padding-left: 1.5rem; }
+
+        /* PROGRESS */
+        .progress-area { margin-bottom: 3rem; }
+        .progress-meta { display: flex; justify-content: space-between; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: #ccc; margin-bottom: 8px; }
+        .progress-track { height: 1px; background: var(--bm-border); }
+        .progress-fill { height: 100%; background: var(--bm-accent); transition: width 0.4s ease; }
+
+        /* KLAUSIMAI */
+        .question-block { display: none; animation: fadeIn 0.4s ease forwards; }
+        .question-block.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .q-num { font-size: 11px; color: #ccc; margin-bottom: 10px; }
+        .q-text { font-size: 1.2rem; font-weight: 400; margin-bottom: 2rem; line-height: 1.4; }
+
+        .options-list { display: flex; flex-direction: column; gap: 10px; }
+        .option-btn {
+            background: none; border: 1px solid var(--bm-border); padding: 1.2rem;
+            text-align: left; cursor: pointer; font-size: 14px; font-family: inherit; transition: all 0.2s;
+            color: var(--bm-text) !important;
+        }
+        .option-btn:hover { border-color: var(--bm-accent); color: var(--bm-accent) !important; }
+        .option-btn.selected { border-color: var(--bm-accent); background: var(--bm-soft-bg); color: var(--bm-accent) !important; }
+
+        /* REZULTATAI */
+        #result-screen { display: none; }
+        #result-screen.show { display: block; animation: fadeIn 0.6s ease; }
+        .res-name { font-size: clamp(2rem, 6vw, 3rem); font-weight: 300; margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+        .res-tagline { font-size: 1rem; font-style: italic; color: var(--bm-muted); margin-bottom: 2rem; }
+        .res-desc { font-size: 1rem; font-weight: 300; margin-bottom: 2.5rem; color: #444; }
+
+        /* BREAKDOWN */
+        .breakdown-title { font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 1.5rem; }
+        .breakdown-item { margin-bottom: 1rem; }
+        .breakdown-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--bm-muted); margin-bottom: 4px; }
+        .breakdown-bar-bg { height: 2px; background: var(--bm-border); width: 100%; }
+        .breakdown-bar-fill { height: 100%; background: var(--bm-accent); transition: width 1.2s ease-out; }
+
+        /* TRAITS */
+        .traits { display: flex; flex-wrap: wrap; gap: 8px; margin: 2rem 0; }
+        .trait { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--bm-accent); border: 1px solid #f0d9b0; padding: 4px 12px; }
+
+        /* NAV & CTA */
+        .quiz-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 2rem; }
+        .btn-back { background: none; border: none; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: #ccc; cursor: pointer; }
+        .btn-next { background: var(--bm-accent); color: #fff; border: none; padding: 12px 28px; cursor: pointer; text-transform: uppercase; font-size: 11px; letter-spacing: 0.15em; font-weight: 600; opacity: 0; pointer-events: none; }
+        .btn-next.visible { opacity: 1; pointer-events: all; }
+
+        .res-actions { display: flex; gap: 1rem; margin-top: 3rem; margin-bottom: 5rem; }
+        .btn-cta { 
+            background: var(--bm-accent); color: #fff; padding: 1rem 2rem; text-decoration: none; 
+            font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; font-weight: 600;
+            display: inline-flex; align-items: center; transition: background 0.3s;
+        }
+        .btn-cta:hover { background: #854d03; }
+        .btn-retake { background: none; border: 1px solid var(--bm-border); padding: 1rem 1.5rem; cursor: pointer; font-size: 0.75rem; text-transform: uppercase; color: var(--bm-muted); letter-spacing: 0.1em; }
+
+        /* NEWSLETTER */
+        .bm-newsletter-section { border-top: 1px solid var(--bm-border); padding-top: 4rem; text-align: center; }
+        .bm-newsletter-section h3 { font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 1rem; }
+        .bm-newsletter-section p { font-size: 0.95rem; font-weight: 300; color: var(--bm-muted) !important; margin-bottom: 2rem; }
+        .bm-form-row { display: flex; align-items: stretch; width: 100%; max-width: 500px; margin: 0 auto; }
+        .bm-form-row input { flex: 1; height: 48px; padding: 0 1.2rem; border: 1px solid var(--bm-accent); border-right: none; outline: none; font-size: 16px; border-radius: 0; }
+        .bm-form-row button { height: 48px; background: var(--bm-accent); color: #ffffff; border: 1px solid var(--bm-accent); padding: 0 1.8rem; cursor: pointer; text-transform: uppercase; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.15em; border-radius: 0; }
+
+        @media (max-width: 600px) {
+            .res-actions { flex-direction: column; }
+            .bm-form-row { flex-direction: column; }
+            .bm-form-row input { border-right: 1px solid var(--bm-accent); margin-bottom: 10px; }
+        }
+    </style>
 </head>
 <body>
 
-<div id="game">
-  <div class="quiz-title">Koks vasariškas audinys tinka Jums?</div>
-  <div class="quiz-sub">Atsakykite į 6 klausimus ir sužinokite.</div>
-  <div class="prog-bar"><div class="prog-fill" id="fill"></div></div>
+<div class="quiz-wrap">
+  <div id="quiz-header-area">
+    <div class="quiz-eyebrow">Baltas Miškas · Audinio gidas</div>
+    <h1 class="quiz-title">Koks vasariškas audinys geriausiai tinka Jums?</h1>
+    <div class="quiz-sub">
+        Susisteminome ir palyginome keleto populiarių natūralių audinių savybių.<br><br>
+        Atsakykite į šešis klausimus ir per mažiau nei 15 sekundžių atraskite, kas geriausiai tinka būtent Jums.
+    </div>
+  </div>
 
-  <div id="qs">
-    <div class="q-block active" id="q0">
-      <p><b>01. Kas Jums svarbiausia renkantis drabužį?</b></p>
-      <div class="opt-list">
-        <button class="opt-btn" onclick="sel(0,'Linas',this)">Natūralumas ir elegancija</button>
-        <button class="opt-btn" onclick="sel(0,'Medvilnė',this)">Minkštumas ir patogumas</button>
-        <button class="opt-btn" onclick="sel(0,'Ramė',this)">Tvirtumas ir struktūra</button>
-        <button class="opt-btn" onclick="sel(0,'Šilkas',this)">Prabanga ir švelnumas</button>
+  <div class="progress-area" id="progress-area">
+    <div class="progress-meta"><span id="prog-text">1 / 6 klausimas</span><span id="prog-pct">0%</span></div>
+    <div class="progress-track"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
+  </div>
+
+  <div id="quiz-body">
+    <div class="question-block active" id="q1">
+      <div class="q-num">01</div>
+      <div class="q-text">Kas jums svarbiausia renkantis naują drabužį?</div>
+      <div class="options-list">
+        <button class="option-btn" onclick="choose(0,'linen',this)">Laiko patikrinta elegancija ir natūralumas</button>
+        <button class="option-btn" onclick="choose(0,'cotton',this)">Minkštumas ir neįpareigojantis komfortas kasdien</button>
+        <button class="option-btn" onclick="choose(0,'ramie',this)">Išskirtinis tvirtumas ir audinio istorija</button>
+        <button class="option-btn" onclick="choose(0,'silk',this)">Rafinuota prabanga ir ypatingas švelnumas odai</button>
       </div>
     </div>
-    <div class="q-block" id="q1"><p><b>02. Kaip vertinate audinio glamžumą?</b></p><div class="opt-list"><button class="opt-btn" onclick="sel(1,'Linas',this)">Mėgstu natūralias raukšles</button><button class="opt-btn" onclick="sel(1,'Medvilnė',this)">Svarbu, kad lengvai lygintųsi</button><button class="opt-btn" onclick="sel(1,'Ramė',this)">Mėgstu standesnį audinį</button><button class="opt-btn" onclick="sel(1,'Šilkas',this)">Noriu lygaus žvilgesio</button></div></div>
-    <div class="q-block" id="q2"><p><b>03. Kokiam orui ieškote drabužio?</b></p><div class="opt-list"><button class="opt-btn" onclick="sel(2,'Linas',this)">Dideliems karščiams</button><button class="opt-btn" onclick="sel(2,'Medvilnė',this)">Kasdienai bet kokiu oru</button><button class="opt-btn" onclick="sel(2,'Ramie',this)">Drėgnam orui</button><button class="opt-btn" onclick="sel(2,'Šilkas',this)">Vėsiam vakarui</button></div></div>
-    <div class="q-block" id="q3"><p><b>04. Ar Jums svarbus audinio tvarumas?</b></p><div class="opt-list"><button class="opt-btn" onclick="sel(3,'Linas',this)">Taip, tai prioritetas</button><button class="opt-btn" onclick="sel(3,'Medvilnė',this)">Svarbu natūralumas</button><button class="opt-btn" onclick="sel(3,'Ramie',this)">Domina inovacijos</button><button class="opt-btn" onclick="sel(3,'Šilkas',this)">Vertinu ilgaamžiškumą</button></div></div>
-    <div class="q-block" id="q4"><p><b>05. Jūsų stilius yra:</b></p><div class="opt-list"><button class="opt-btn" onclick="sel(4,'Linas',this)">Laisvas ir bohemiškas</button><button class="opt-btn" onclick="sel(4,'Medvilnė',this)">Jaukus ir paprastas</button><button class="opt-btn" onclick="sel(4,'Ramie',this)">Minimalistinis</button><button class="opt-btn" onclick="sel(4,'Šilkas',this)">Elegantiškas</button></div></div>
-    <div class="q-block" id="q5"><p><b>06. Priežiūra Jums yra:</b></p><div class="opt-list"><button class="opt-btn" onclick="sel(5,'Linas',this)">Natūralus ritualas</button><button class="opt-btn" onclick="sel(5,'Medvilnė',this)">Greitas skalbimas</button><button class="opt-btn" onclick="sel(5,'Ramie',this)">Atsakingas darbas</button><button class="opt-btn" onclick="sel(5,'Šilkas',this)">Saugau prabangą</button></div></div>
+    
+    <div class="question-block" id="q2">
+        <div class="q-num">02</div>
+        <div class="q-text">Kaip vertinate audinio tekstūrą ir glamžumą?</div>
+        <div class="options-list">
+            <button class="option-btn" onclick="choose(1,'linen',this)">Mėgstu natūralias raukšles – tai suteikia gyvumo</button>
+            <button class="option-btn" onclick="choose(1,'cotton',this)">Toleruoju, jei audinys lengvai išlyginamas</button>
+            <button class="option-btn" onclick="choose(1,'ramie',this)">Renkuosi standesnį, savo formą laikantį audinį</button>
+            <button class="option-btn" onclick="choose(1,'silk',this)">Ieškau lygaus, krentančio ir žvilgančio paviršiaus</button>
+        </div>
+    </div>
+
+    <div class="question-block" id="q3">
+        <div class="q-num">03</div>
+        <div class="q-text">Kokiam orui dažniausiai ieškote papildymo spintai?</div>
+        <div class="options-list">
+            <button class="option-btn" onclick="choose(2,'linen',this)">Karštai vasarai – oda turi laisvai kvėpuoti</button>
+            <button class="option-btn" onclick="choose(2,'cotton',this)">Visiems sezonams – vertinu universalumą</button>
+            <button class="option-btn" onclick="choose(2,'ramie',this)">Drėgnam klimatui – drėgmė turi greitai išgaruoti</button>
+            <button class="option-btn" onclick="choose(2,'silk',this)">Ieškau audinio, kuris vėsintų vasarą ir šildytų žiemą</button>
+        </div>
+    </div>
+
+    <div class="question-block" id="q4">
+        <div class="q-num">04</div>
+        <div class="q-text">Kiek jums svarbi lėtoji mada ir tvarumas?</div>
+        <div class="options-list">
+            <button class="option-btn" onclick="choose(3,'linen',this)">Tai prioritetas – renkuosi ekologiškus pluoštus</button>
+            <button class="option-btn" onclick="choose(3,'cotton',this)">Svarbu – renkuosi natūralią kokybę</button>
+            <button class="option-btn" onclick="choose(3,'ramie',this)">Labai svarbu – domiuosi inovatyvumu</button>
+            <button class="option-btn" onclick="choose(3,'silk',this)">Vertinu tai, kas tauri ir tarnauja metų metus</button>
+        </div>
+    </div>
+
+    <div class="question-block" id="q5">
+        <div class="q-num">05</div>
+        <div class="q-text">Kuris stiliaus apibūdinimas jums artimiausias?</div>
+        <div class="options-list">
+            <button class="option-btn" onclick="choose(4,'linen',this)">Laisvas, autentiškas ir bohemiškas</button>
+            <button class="option-btn" onclick="choose(4,'cotton',this)">Jaukus, kasdienis ir patikimas</button>
+            <button class="option-btn" onclick="choose(4,'ramie',this)">Minimalistinis, struktūriškas ir prabangus</button>
+            <button class="option-btn" onclick="choose(4,'silk',this)">Rafinuotas, moteriškas ir elegantiškas</button>
+        </div>
+    </div>
+
+    <div class="question-block" id="q6">
+        <div class="q-num">06</div>
+        <div class="q-text">Drabužių priežiūra jums yra:</div>
+        <div class="options-list">
+            <button class="option-btn" onclick="choose(5,'linen',this)">Mielas ritualas – tausoju natūralumą</button>
+            <button class="option-btn" onclick="choose(5,'cotton',this)">Paprastas procesas – skalbiu mašina</button>
+            <button class="option-btn" onclick="choose(5,'ramie',this)">Atsakingas darbas – geras audinys vertas laiko</button>
+            <button class="option-btn" onclick="choose(5,'silk',this)">Ypatingas dėmesys – saugau prabangų pluoštą</button>
+        </div>
+    </div>
+
+    <div class="quiz-nav">
+      <button class="btn-back" id="btn-back" onclick="goBack()" disabled>← Atgal</button>
+      <button class="btn-next" id="btn-next" onclick="goNext()">Toliau →</button>
+    </div>
   </div>
 
-  <div class="nav">
-    <button style="background:none; border:none; color:#ccc; cursor:pointer;" onclick="prev()">Atgal</button>
-    <button class="btn-n" id="nxt" onclick="next()">Toliau</button>
-  </div>
-</div>
+  <div id="result-screen">
+    <div class="quiz-eyebrow">Jūsų idealus pasirinkimas</div>
+    <div class="res-name" id="res-name"></div>
+    <div class="res-tagline" id="res-tagline"></div>
+    <div style="width: 40px; height: 1px; background: var(--bm-accent); margin: 1.5rem 0 2rem 0;"></div>
+    <div class="res-desc" id="res-desc"></div>
+    
+    <div class="breakdown-title">Suderinamumo profilis</div>
+    <div id="res-breakdown"></div>
 
-<div id="res">
-  <div class="res-name" id="rn"></div>
-  <p id="rd"></p>
-  <div id="rb"></div>
-  <br>
-  <a href="https://www.baltasmiskas.lt" style="display:inline-block; background:var(--accent); color:#fff; padding:15px 25px; text-decoration:none; font-size:14px;">ATRASKITE KOLEKCIJĄ</a>
+    <div class="traits" id="res-traits"></div>
+
+    <div class="res-actions">
+      <a href="https://www.baltasmiskas.lt" class="btn-cta" id="res-cta" target="_top">Atrasti kolekciją →</a>
+      <button class="btn-retake" onclick="retake()">Atlikti testą iš naujo</button>
+    </div>
+
+    <div class="bm-newsletter-section">
+      <h3>Naujienlaiškio prenumerata</h3>
+      <p>Informacija apie nuolaidas ir naujienas <strong>kiekvieną penktadienį.</strong></p>
+      <div id="bm-form-view">
+        <form id="bm-quiz-mailerlite" class="bm-form-row">
+          <input id="bm-quiz-email" placeholder="Jūsų el. paštas" required type="email" />
+          <button type="submit">Prenumeruoti</button>
+        </form>
+      </div>
+      <div id="bm-success-view" style="display:none; padding: 1rem 0;">
+        <p style="color: var(--bm-accent); font-weight: 500;">Ačiū! Prenumerata sėkmingai užregistruota.</p>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
-  var cur = 0, ans = [];
-  var sheet_url = 'ĮKLIJUOKITE_SAVO_NAUJĄ_URL_ČIA';
+  const TOTAL = 6;
+  let current = 0;
+  let answers = new Array(TOTAL).fill(null);
+  const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbxoF01i4MpzkdL2nW_u0BRBvMqQKErRQ0pvOhxpbuSz8aFPyPojH2QxgdlHRfvXnNs83w/exec';
 
-  function sel(idx, val, btn) {
-    ans[idx] = val;
-    var opts = btn.parentElement.querySelectorAll('.opt-btn');
-    opts.forEach(b => b.classList.remove('selected'));
+  const FABRICS = {
+    linen: { name: 'Linas', tagline: '„Lėtesnio gyvenimo filosofija“', desc: 'Jus traukia autentiškas, neįpareigojantis grožis. Linas po kiekvieno skalbimo tampa vis minkštesnis.', traits: ['Kvėpuojantis', 'Tvarus', 'Antibakterinis'], url: 'https://www.baltasmiskas.lt/paieska?q=linas' },
+    cotton: { name: 'Medvilnė', tagline: '„Švelnumas ir kasdienė laisvė“', desc: 'Jums svarbiausia – komfortas. Medvilnė yra minkšta ir leidžia odai jaustis gaiviai.', traits: ['Minkšta', 'Hipoalergiška', 'Universali'], url: 'https://www.baltasmiskas.lt/paieska?q=medvilne' },
+    ramie: { name: 'Ramė', tagline: '„Struktūra ir taurus atsparumas“', desc: 'Jus domina audiniai su charakteriu. Ramė pasižymi prabangiu spindesiu ir neįtikėtinu tvirtumu.', traits: ['Ypač tvirtas', 'Prabangus spindesys', 'Tvarus'], url: 'https://www.baltasmiskas.lt/paieska?q=romy' },
+    silk: { name: 'Šilkas', tagline: '„Švelnus antros odos pojūtis“', desc: 'Jūs vertinate rafinuotumą ir neprilygstamą švelnumą. Šilkas palaiko optimalią temperatūrą.', traits: ['Termoreguliacinis', 'Švelnumas', 'Prabanga'], url: 'https://www.baltasmiskas.lt/paieska?q=silkas' }
+  };
+
+  const LABELS = { linen: 'Linas', cotton: 'Medvilnė', ramie: 'Ramė', silk: 'Šilkas' };
+
+  function choose(qIdx, fabric, btn) {
+    const parent = document.getElementById('q' + (qIdx+1));
+    parent.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
     btn.classList.add('selected');
-    document.getElementById('nxt').style.visibility = 'visible';
+    answers[qIdx] = fabric;
+    const n = document.getElementById('btn-next');
+    n.classList.add('visible');
+    n.textContent = qIdx === TOTAL-1 ? 'Žiūrėti rezultatą →' : 'Toliau →';
   }
 
-  function next() {
-    if (cur < 5) {
-      cur++;
-      showQ();
-    } else {
-      finish();
-    }
+  function goNext() { if (!answers[current]) return; current++; if (current >= TOTAL) showResult(); else showQuestion(current); }
+  function goBack() { if (current === 0) return; current--; showQuestion(current); }
+
+  function showQuestion(idx) {
+    document.querySelectorAll('.question-block').forEach(b => b.classList.remove('active'));
+    document.getElementById('q' + (idx+1)).classList.add('active');
+    const pct = Math.round((idx / TOTAL) * 100);
+    document.getElementById('prog-fill').style.width = pct + '%';
+    document.getElementById('prog-text').textContent = (idx+1) + ' / ' + TOTAL + ' klausimas';
+    document.getElementById('prog-pct').textContent = pct + '%';
+    document.getElementById('btn-back').disabled = idx === 0;
+    const n = document.getElementById('btn-next');
+    if (answers[idx]) n.classList.add('visible'); else n.classList.remove('visible');
+    window.scrollTo(0,0);
   }
 
-  function prev() { if (cur > 0) { cur--; showQ(); } }
+  function showResult() {
+    let finalScores = { linen:0, cotton:0, ramie:0, silk:0 };
+    answers.forEach(a => finalScores[a]++);
+    const winnerKey = Object.entries(finalScores).sort((a,b) => b[1]-a[1])[0][0];
+    const data = FABRICS[winnerKey];
 
-  function showQ() {
-    document.querySelectorAll('.q-block').forEach((b, i) => b.classList.toggle('active', i == cur));
-    document.getElementById('fill').style.width = (cur / 6 * 100) + '%';
-    document.getElementById('nxt').style.visibility = ans[cur] ? 'visible' : 'hidden';
-  }
-
-  function finish() {
-    var counts = {};
-    ans.forEach(a => counts[a] = (counts[a] || 0) + 1);
-    var win = Object.entries(counts).sort((a,b) => b[1]-a[1])[0][0];
+    // SIUNTIMAS Į GOOGLE SHEETS
+    fetch(GOOGLE_SHEET_URL + "?winner=" + encodeURIComponent(data.name) + "&answers=" + encodeURIComponent(answers.join(", ")), { mode: 'no-cors' });
     
-    // Siunčiame duomenis
-    fetch(sheet_url + "?winner=" + encodeURIComponent(win) + "&answers=" + encodeURIComponent(ans.join(", ")), { mode: 'no-cors' });
+    document.getElementById('res-name').textContent = data.name;
+    document.getElementById('res-tagline').textContent = data.tagline;
+    document.getElementById('res-desc').textContent = data.desc;
+    document.getElementById('res-traits').innerHTML = data.traits.map(t => `<span class="trait">${t}</span>`).join('');
+    
+    const cta = document.getElementById('res-cta');
+    cta.href = data.url;
 
-    document.getElementById('game').style.display = 'none';
-    document.getElementById('res').style.display = 'block';
-    document.getElementById('rn').innerText = win;
-    document.getElementById('rd').innerText = "Puikus pasirinkimas! Šis audinis geriausiai atitinka Jūsų poreikius.";
+    let breakdownHtml = '';
+    Object.entries(finalScores).forEach(([key, val]) => {
+        const percentage = Math.round((val / TOTAL) * 100);
+        breakdownHtml += `<div class="breakdown-item"><div class="breakdown-label"><span>${LABELS[key]}</span><span>${percentage}%</span></div><div class="breakdown-bar-bg"><div class="breakdown-bar-fill" style="width: ${percentage}%"></div></div></div>`;
+    });
+    document.getElementById('res-breakdown').innerHTML = breakdownHtml;
+
+    document.getElementById('quiz-header-area').style.display = 'none';
+    document.getElementById('progress-area').style.display = 'none';
+    document.getElementById('quiz-body').style.display = 'none';
+    document.getElementById('result-screen').classList.add('show');
+    window.scrollTo(0,0);
   }
+
+  function retake() { location.reload(); }
+
+  document.getElementById('bm-quiz-mailerlite').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const email = document.getElementById('bm-quiz-email').value;
+    document.getElementById('bm-form-view').style.display = 'none';
+    document.getElementById('bm-success-view').style.display = 'block';
+    const url = 'https://assets.mailerlite.com/jsonp/1100412/forms/179555461223154701/subscribe?fields[email]=' + encodeURIComponent(email) + '&ml-submit=1';
+    const script = document.createElement('script');
+    script.src = url;
+    document.body.appendChild(script);
+  });
 </script>
+
 </body>
 </html>
