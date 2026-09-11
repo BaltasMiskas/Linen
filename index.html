@@ -260,35 +260,40 @@
       tagline: '„Neprilygstama prabanga ir švelnumas“', 
       desc: 'Jūs vertinate itin aukštą kokybę ir karališką švelnumą. Kašmyras yra stebėtinai lengvas, tačiau šildo kelis kartus stipriau nei įprasta vilna.', 
       traits: ['Minkštumas', 'Itin lengvas', 'Prabangus'], 
-      url: 'https://www.baltasmiskas.lt/paieska?q=kasmyras' 
+      url: 'https://www.baltasmiskas.lt/paieska?q=kasmyras',
+      buttonText: 'Atrasti kašmyro kolekciją →'
     },
     merino: { 
       name: 'Merino vilna', 
       tagline: '„Švelnus universalumas kasdienai“', 
       desc: 'Jūsų prioritetas – praktiškas komfortas. Merino vilna visiškai „nekąsta“, puikiai kvėpuoja ir palaiko optimalią kūno temperatūrą.', 
       traits: ['Švelnus', 'Termoreguliacinis', 'Universalus'], 
-      url: 'https://www.baltasmiskas.lt/paieska?q=merino' 
+      url: 'https://www.baltasmiskas.lt/paieska?q=merino',
+      buttonText: 'Atrasti merino vilnos kolekciją →'
     },
     mohair: { 
       name: 'Mohera', 
       tagline: '„Elegantiškas purumas ir tekstūra“', 
       desc: 'Jus traukia išskirtinis stilius ir lengvumas. Angoros ožkų vilna (mohera) išsiskiria šilkiniai pūkuotu paviršiumi ir nuostabiu spindesiu.', 
       traits: ['Pūkuota', 'Tekstūrinė', 'Išskirtinė'], 
-      url: 'https://www.baltasmiskas.lt/paieska?q=mohera' 
+      url: 'https://www.baltasmiskas.lt/paieska?q=mohera',
+      buttonText: 'Atrasti moheros kolekciją →'
     },
     alpaca: { 
       name: 'Alpakos vilna', 
       tagline: '„Maksimali šiluma ir jaukumas“', 
       desc: 'Ieškote patikimos apsaugos nuo didžiausių šalčių. Alpakos vilna yra itin šilta, atspari drėgmei ir neturi lanolino, todėl tinka jautriai odai.', 
       traits: ['Ypač šilta', 'Hipoalergiška', 'Atspari'], 
-      url: 'https://www.baltasmiskas.lt/paieska?q=alpaka' 
+      url: 'https://www.baltasmiskas.lt/paieska?q=alpaka',
+      buttonText: 'Atrasti alpakos vilnos kolekciją →'
     },
     sheep: { 
       name: 'Avies vilna', 
       tagline: '„Autentiškas tvirtumas ir natūralumas“', 
       desc: 'Vertinate tradicijas, laiko patikrintą patvarumą ir natūralią struktūrą. Avies vilna suteikia ypatingą jaukumo ir atsparumo jausmą.', 
       traits: ['Patvari', 'Autentiška', 'Šildanti'], 
-      url: 'https://www.baltasmiskas.lt/paieska?q=vilna' 
+      url: 'https://www.baltasmiskas.lt/paieska?q=vilna',
+      buttonText: 'Atrasti avies vilnos kolekciją →'
     }
   };
 
@@ -357,8 +362,10 @@
     document.getElementById('res-desc').textContent = data.desc;
     document.getElementById('res-traits').innerHTML = data.traits.map(t => `<span class="trait">${t}</span>`).join('');
     
+    // ATNAUJINTAS MYGTUKO TEKSTAS IR NUORODA
     const cta = document.getElementById('res-cta');
     cta.href = data.url;
+    cta.textContent = data.buttonText;
 
     let breakdownHtml = '';
     Object.entries(finalScores).forEach(([key, val]) => {
@@ -396,6 +403,3 @@
     document.body.appendChild(script);
   });
 </script>
-
-</body>
-</html>
